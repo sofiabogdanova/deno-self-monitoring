@@ -102,3 +102,7 @@ dist
 
 # TernJS port file
 .tern-port
+/.idea/workspace.xml
+/.idea/modules.xml
+/.idea/deno-self-monitoring.iml
+/.idea/vcs.xml
