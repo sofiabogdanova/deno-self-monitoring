@@ -1,0 +1,65 @@
+<%- include('./partials/header.ejs') %>
+<div class="container">
+    <h3>Summary</h3>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Week summary</h5>
+                    <p class="card-text">Average sleep duration: <%= weeklyStatistics.averageSleepTime %> hours</p>
+                    <p class="card-text">Average exercise duration: <%= weeklyStatistics.averageExerciseTime %> hours</p>
+                    <p class="card-text">Average study duration: <%= weeklyStatistics.averageStudyTime %> hours</p>
+                    <p class="card-text">Average sleep quality: <%= weeklyStatistics.averageSleepQuality %></p>
+                    <p class="card-text">Average mood: <%= weeklyStatistics.averageMood %></p>
+                </div>
+            </div>
+            <br/>
+            <form method="POST" action="/behavior/summary">
+                <div>
+                    <label for="weekStart">Start</label>
+                    <input type="date" name="weekStart" id="weekStart" value="<%= weekStart %>"/>
+                </div>
+                <br/>
+
+                <div>
+                    <label for="weekEnd">End</label>
+                    <input type="date" name="weekEnd" id="weekEnd" value="<%= weekEnd %>"/>
+                </div>
+                <br/>
+
+                <input type="submit" value="Calculate week average" class="btn btn-info"/>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Month summary</h5>
+                    <p class="card-text">Average sleep duration: <%= monthlyStatistics.averageSleepTime %> hours</p>
+                    <p class="card-text">Average exercise duration: <%= monthlyStatistics.averageExerciseTime %> hours</p>
+                    <p class="card-text">Average study duration: <%= monthlyStatistics.averageStudyTime %> hours</p>
+                    <p class="card-text">Average sleep quality: <%= monthlyStatistics.averageSleepQuality %></p>
+                    <p class="card-text">Average mood: <%= monthlyStatistics.averageMood %></p>
+                </div>
+            </div>
+
+            <br/>
+            <form method="POST" action="/behavior/summary">
+                <div>
+                    <label for="monthStart">Start</label>
+                    <input type="date" name="monthStart" id="monthStart" value="<%= monthStart %>"/>
+                </div>
+                <br/>
+
+                <div>
+                    <label for="monthEnd">End</label>
+                    <input type="date" name="monthEnd" id="monthEnd" value="<%= monthEnd %>"/>
+                </div>
+                <br/>
+
+                <input type="submit" value="Calculate month average" class="btn btn-info"/>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include('./partials/footer.ejs') %>

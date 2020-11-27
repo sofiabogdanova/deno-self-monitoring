@@ -1,0 +1,52 @@
+<%- include('./partials/header.ejs') %>
+<container>
+    <div class="row align-center">
+        <div class="mx-auto">
+            <h2>Add evening report</h2>
+            <form method="POST" action="/behavior/reporting/evening">
+                <div>
+                    <label for="exerciseTime">Exercise time (in hours)</label>
+                    <input type="number" name="exerciseTime" step=".1" id="exerciseTime"/>
+                </div>
+                <br/>
+
+                <div>
+                    <label for="studyingTime">Studying time (in hours)</label>
+                    <input type="number" name="studyingTime" step=".1" id="studyingTime"/>
+                </div>
+                <br/>
+
+                <div>
+                    <label for="eatingRegularity">Eating regularity</label>
+                    <input type="range" name="eatingRegularity" id="eatingRegularity" min="1" max="5"/>
+                </div>
+                <br/>
+
+                <div>
+                    <label for="eatingQuality">Eating quality</label>
+                    <input type="range" name="eatingQuality" id="eatingQuality" min="1" max="5"/>
+                </div>
+                <br/>
+
+                <div>
+                    <label for="mood">Mood</label>
+                    <input type="range" name="mood" id="mood" min="1" max="5"/>
+                </div>
+                <br/>
+
+                <div>
+                    <label for="day">Date</label>
+                    <input type="date" name="day" id="day" value="<%= today %>"/>
+                </div>
+                <br/>
+
+                <input type="submit" value="Save" class="btn btn-success"/>
+            </form>
+
+            <br/>
+
+            <a href="/behavior/reporting" class="btn btn-info" role="button">Go back</a>
+        </div>
+    </div>
+</container>
+<%- include('./partials/footer.ejs') %>

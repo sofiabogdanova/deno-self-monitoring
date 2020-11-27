@@ -1,3 +1,39 @@
 <%- include('./partials/header.ejs') %>
-<h1><%= hello %></h1>
+<div class="container">
+    <h2>Welcome!</h2>
+    <h4>This app is about tracking daily activities.</h4>
+    <h6>Here, you can track your sleeping schedule, exercise and studying activities, mood and eating habits.</h6>
+</div>
+
+<br/>
+
+<div class="container">
+    <p><%= displayText %></p>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Average mood for today</h5>
+                    <p class="card-text"><%= todayMood %></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Average mood for yesterday</h5>
+                    <p class="card-text"><%= yesterdayMood %></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br/>
+
+<div class="container">
+    <a href="/auth/register" class="btn btn-outline-primary" role="button">Register</a>
+    <a href="/auth/login" class="btn btn-success" role="button">Login</a>
+    <a href="/behavior/reporting" class="btn btn-info" role="button">Go to Reporting</a>
+</div>
 <%- include('./partials/footer.ejs') %>

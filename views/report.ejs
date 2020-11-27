@@ -1,0 +1,37 @@
+<%- include('./partials/header.ejs') %>
+
+<container>
+    <div class="row align-center">
+        <div class="mx-auto">
+            <h3> Welcome!</h3>
+            <h6> Today is <%= today %></h6>
+            <h8> Note: the form will be overwritten if already filled for the day!
+            </h8>
+
+            <br/>
+            <div class="row">
+                <div class="col-md-4">
+                    <a href="/behavior/reporting/morning" class="btn btn-info" role="button">Morning</a>
+                </div>
+
+                <div class="col-md-4">
+                    <a href="/behavior/reporting/evening" class="btn btn-info" role="button">Evening</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <% if (morningReportExists ) { %>
+                        <p>Morning report is already filled</p>
+                    <% } %>
+                </div>
+
+                <div class="col-md-4">
+                    <% if (eveningReportExists ) { %>
+                        <p>Evening report is already filled</p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</container>
+<%- include('./partials/footer.ejs') %>
