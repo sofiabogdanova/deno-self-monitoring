@@ -123,8 +123,7 @@ const register = async ({request, response, render, session}) => {
     }
 
     // otherwise, store the details in the database
-    const hash = await bcrypt.hash(data.password);
-    const id = await authService.createUser(data.email, hash);
+    const id = await authService.createUser(data.email, data.password);
     await session.set('authenticated', true);
     await session.set('user', {
         id: id,
