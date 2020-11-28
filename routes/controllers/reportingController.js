@@ -1,3 +1,4 @@
+import {validasaur} from "../../deps.js";
 import * as reportingService from "../../services/reportingService.js";
 import DateHelper from "../../utils/dateHelper.js"
 
@@ -7,7 +8,8 @@ const getData = async (session) => {
         email: "",
         userId: "",
         morningReportExists: false,
-        eveningReportExists: false
+        eveningReportExists: false,
+        errors: []
     };
 
     if (session) {
@@ -18,6 +20,21 @@ const getData = async (session) => {
     }
 
     return data;
+};
+
+const morningValidationRules = {
+    sleepDuration: [validasaur.required, validasaur.isNumeric, validasaur.minNumber(0)],
+    sleepQuality: [validasaur.isInt, validasaur.numberBetween(1,5)],
+    eatingRegularity: [validasaur.isInt, validasaur.numberBetween(1,5)],
+    eatingQuality: [validasaur.isInt, validasaur.numberBetween(1,5)],
+    mood: [validasaur.isInt, validasaur.numberBetween(1,5)]
+};
+
+const eveningValidationRules = {
+    exerciseTime: [validasaur.required, validasaur.isNumeric, validasaur.minNumber(0)],
+    studyingTime: [validasaur.required, validasaur.isNumeric, validasaur.minNumber(0)],
+    sleepQuality: [validasaur.isInt, validasaur.numberBetween(1,5)],
+    mood: [validasaur.isInt, validasaur.numberBetween(1,5)]
 };
 
 const showReporting = async ({render, session}) => {
@@ -42,23 +59,47 @@ const showReportingForm = async ({render, params, session}) => {
     }
 }
 
-const postMorningReporting = async ({request, response, session}) => {
+const postMorningReporting = async ({request, response, session, render}) => {
     const body = request.body();
     const params = await body.value;
     const data = await getData(session);
 
     const morningReport = morningReportModel(params, data.userId);
 
+    const [passes, errors] = await validasaur.validate(morningReport, morningValidationRules);
+    Object.keys(errors).forEach((attribute) => {
+        Object.values(errors[attribute]).forEach((err) => {
+            data.errors.push(err)
+        })
+    });
+
+    if (!passes) {
+        render('morning.ejs', data);
+        return;
+    }
+
     await reportingService.postMorningReport(morningReport);
     redirectToReporting(response);
 };
 
-const postEveningReporting = async ({request, response, session}) => {
+const postEveningReporting = async ({request, response, session, render}) => {
     const body = request.body();
     const params = await body.value;
     const data = await getData(session);
 
     const eveningReport = eveningReportModel(params,data. userId);
+
+    const [passes, errors] = await validasaur.validate(eveningReport, eveningValidationRules);
+    Object.keys(errors).forEach((attribute) => {
+        Object.values(errors[attribute]).forEach((err) => {
+            data.errors.push(err)
+        })
+    });
+
+    if (!passes) {
+        render('evening.ejs', data);
+        return;
+    }
 
     await reportingService.postEveningReport(eveningReport);
     redirectToReporting(response);
@@ -66,9 +107,9 @@ const postEveningReporting = async ({request, response, session}) => {
 
 const morningReportModel = (params, userId) => {
     return {
-        sleepDuration: params.get('sleepDuration'),
-        sleepQuality: params.get('sleepQuality'),
-        mood: params.get('mood'),
+        sleepDuration: +(params.get('sleepDuration')),
+        sleepQuality: +(params.get('sleepQuality')),
+        mood: +params.get('mood'),
         day: params.get('day'),
         userId: userId
     };
@@ -76,11 +117,11 @@ const morningReportModel = (params, userId) => {
 
 const eveningReportModel = (params, userId) => {
     return {
-        exerciseTime: params.get('exerciseTime'),
-        studyingTime: params.get('studyingTime'),
-        eatingRegularity: params.get('eatingRegularity'),
-        eatingQuality: params.get('eatingQuality'),
-        mood: params.get('mood'),
+        exerciseTime: +params.get('exerciseTime'),
+        studyingTime: +params.get('studyingTime'),
+        eatingRegularity: +params.get('eatingRegularity'),
+        eatingQuality: +params.get('eatingQuality'),
+        mood: +params.get('mood'),
         day: params.get('day'),
         userId: userId
     };
