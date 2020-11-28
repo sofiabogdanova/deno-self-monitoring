@@ -37,7 +37,22 @@ VALUES ($1, $2, $3, $4, $5)`,
 
 const deleteMorningReport = (day, userId) => deleteReport(day, userId, 'morning_info');
 
-const getEveningReport = (day, userId) => getReport(day, userId, 'evening_info')
+const getEveningReport = async (day, userId) => {
+    const report = await getReport(day, userId, 'evening_info');
+
+    if (!report) {
+        return null;
+    }
+
+    return {
+        studyingTime: report.studying_time,
+        eatingRegularity: report.eating_regularity,
+        eatingQuality: report.eating_quality,
+        mood: report.mood,
+        day: format(report.day),
+        userId: report.user_id
+    }
+}
 
 const postEveningReport = async (eveningInfo) => {
     const reportAlreadyExists = await getEveningReport(eveningInfo.day, eveningInfo.userId)
