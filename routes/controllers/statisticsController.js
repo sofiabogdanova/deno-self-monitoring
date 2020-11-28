@@ -73,9 +73,6 @@ const getWeekPeriod = (params) => {
     const week = Number(weekDatePicker.substring(6));
 
     return dateHelper.weekByWeekNumber(week);
-    // const start = params.get('weekStart') ? params.get('weekStart') : defaultPeriod.start;
-    // const end = params.get('weekEnd')? params.get('weekEnd') : defaultPeriod.end;
-    // return { start, end }
 }
 
 const getMonthPeriod = (params) => {
@@ -94,10 +91,6 @@ const getMonthPeriod = (params) => {
     const month = Number(monthDatePicker.substring(5));
 
     return dateHelper.monthByMonthNumber(month, year);
-
-    // const start = params.get('monthStart') ? params.get('monthStart') : defaultPeriod.start;
-    // const end = params.get('monthEnd') ? params.get('monthEnd') : defaultPeriod.end;
-    // return { start, end }
 }
 
 export {allStatisticsDefault, allStatistics}
