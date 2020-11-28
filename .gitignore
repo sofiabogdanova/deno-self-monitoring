@@ -106,3 +106,4 @@ dist
 /.idea/modules.xml
 /.idea/deno-self-monitoring.iml
 /.idea/vcs.xml
+/.idea/deno.xml

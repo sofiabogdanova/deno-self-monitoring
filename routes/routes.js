@@ -7,11 +7,6 @@ import * as helloApi from "./apis/helloApi.js";
 
 const router = new Router();
 
-// router.get('/', hello);
-//
-// router.get('/api/hello', helloApi.getHello);
-// router.post('/api/hello', helloApi.setHello);
-
 // trendController
 router.get('/', trendController.showMainTrends);
 
@@ -35,5 +30,4 @@ router.post('/auth/register', authController.register)
 
 router.get('/auth/logout', authController.logout)
 
-router.post('/auth/register/test', test)
 export {router};
