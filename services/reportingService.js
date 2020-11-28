@@ -1,11 +1,32 @@
-import {executeQuery} from "../database/database.js";
+import {executeQuery} from '../database/database.js';
+import {format} from "../utils/formatHelper.js";
+
+const getMorningReport = async (day, userId) => {
+    const report = await getReport(day, userId, 'morning_info');
+
+    if (!report) {
+        return null;
+    }
+
+    return {
+        sleepDuration: report.sleep_duration,
+        sleepQuality: report.sleep_quality,
+        mood: report.mood,
+        day: format(report.day),
+        userId: report.user_id
+    }
+}
 
 const postMorningReport = async (morningInfo) => {
-    const reportAlreadyExists = getReport(morningInfo.day, morningInfo.userId, "morning_info")
+    const reportAlreadyExists = getMorningReport(morningInfo.day, morningInfo.userId)
+
     if (reportAlreadyExists) {
-        await deleteReport(morningInfo.userId, morningInfo.day, "morning_info")
+        await deleteMorningReport(morningInfo.day, morningInfo.userId)
     }
-    await executeQuery("INSERT into morning_info (sleep_duration, sleep_quality, mood, day, user_id) values ($1, $2, $3, $4, $5)",
+
+    await executeQuery(`
+INSERT INTO morning_info (sleep_duration, sleep_quality, mood, day, user_id) 
+VALUES ($1, $2, $3, $4, $5)`,
         morningInfo.sleepDuration,
         morningInfo.sleepQuality,
         morningInfo.mood,
@@ -14,14 +35,20 @@ const postMorningReport = async (morningInfo) => {
     );
 }
 
+const deleteMorningReport = (day, userId) => deleteReport(day, userId, 'morning_info');
+
+const getEveningReport = (day, userId) => getReport(day, userId, 'evening_info')
+
 const postEveningReport = async (eveningInfo) => {
-    const reportAlreadyExists = await getReport(eveningInfo.day, eveningInfo.userId, "evening_info")
+    const reportAlreadyExists = await getEveningReport(eveningInfo.day, eveningInfo.userId)
+
     if (reportAlreadyExists) {
-        await deleteReport(eveningInfo.userId, eveningInfo.day, "evening_info")
+        await deleteEveningReport(eveningInfo.day, eveningInfo.userId)
     }
-    await executeQuery(
-        "INSERT into evening_info (exercise_time, studying_time, eating_regularity, " +
-        "eating_quality, mood, day, user_id) values ($1, $2, $3, $4, $5, $6, $7)",
+
+    await executeQuery(`
+INSERT INTO evening_info (exercise_time, studying_time, eating_regularity, eating_quality, mood, day, user_id) 
+VALUES ($1, $2, $3, $4, $5, $6, $7)`,
         eveningInfo.exerciseTime,
         eveningInfo.studyingTime,
         eveningInfo.eatingRegularity,
@@ -32,10 +59,14 @@ const postEveningReport = async (eveningInfo) => {
     );
 }
 
+const deleteEveningReport = (day, userId) => deleteReport(day, userId, 'evening_info');
+
+// ====================================================================================================================
+// PRIVATE
+// ====================================================================================================================
 const getReport = async (day, userId, tableName) => {
-    const res = await executeQuery(`SELECT * FROM ${tableName} where user_id = $1 and day = $2 ORDER BY id DESC LIMIT 1`,
-        userId,
-        day);
+    const res = await executeQuery(`SELECT * FROM ${tableName} WHERE user_id = $1 AND day = $2 ORDER BY id DESC LIMIT 1`,
+        userId, day);
     if (res && res.rowCount > 0) {
         return res.rowsOfObjects()[0];
     }
@@ -43,10 +74,17 @@ const getReport = async (day, userId, tableName) => {
     return null;
 }
 
-const deleteReport = async (userId, day, tableName) => {
-    await executeQuery(`DELETE from ${tableName} where user_id = $1 and day = $2`,
+const deleteReport = async (day, userId, tableName) => {
+    await executeQuery(`DELETE FROM ${tableName} WHERE user_id = $1 AND day = $2`,
         userId,
         day);
 }
 
-export {postMorningReport, postEveningReport, getReport};
+export {
+    getMorningReport,
+    postMorningReport,
+    deleteMorningReport,
+    getEveningReport,
+    postEveningReport,
+    deleteEveningReport
+};
