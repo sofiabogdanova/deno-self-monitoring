@@ -1,35 +1,42 @@
 import * as statisticsService from '../../services/statisticsService.js';
-import {previousMonth, previousWeek} from '../../utils/dateHelper.js'
+import {previousMonth, previousWeek, today, monthByMonthNumber, weekByWeekNumber} from '../../utils/dateHelper.js'
+
+const getData = async (session) => {
+    const data = {
+        email: "",
+        userId: ""
+    };
+
+    if (session) {
+        const user = await session.get('user');
+        data.email = user.email;
+        data.userId = user.id;
+    }
+
+    return data;
+};
 
 const allStatisticsDefault = async ({session, render}) => {
-    const userId = 1; //get from session
+    const userData = await getData(session);
     const monthPeriod = previousMonth();
     const weekPeriod = previousWeek();
 
-    // const weeklyStatistics = await statisticsService.getAllStatistic(weekPeriod, userId);
-    // const monthlyStatistics = await statisticsService.getAllStatistic(monthPeriod, userId);
-    //
-    // const data = {
-    //     weeklyStatistics: weeklyStatistics,
-    //     monthlyStatistics: monthlyStatistics,
-    //     weekStart: weekPeriod.start,
-    //     weekEnd: weekPeriod.end,
-    //     monthStart: monthPeriod.start,
-    //     monthEnd: monthPeriod.end,
-    // };
-    const data = await statistics(weekPeriod, monthPeriod, userId);
-    data.email = 'blabla';
-    data.authorised = true;
+    const data = await statistics(weekPeriod, monthPeriod, userData.userId);
+    data.email = userData.email;
     render('summary.ejs', data);
 }
 
 const allStatistics = async ({session, render, request}) => {
-    const userId = 1; //get from session
+    const userData = await getData(session);
+
     const body = request.body();
     const params = await body.value;
+
     const weekPeriod = getWeekPeriod(params);
     const monthPeriod = getMonthPeriod(params);
-    const data = await statistics(weekPeriod, monthPeriod, userId);
+
+    const data = await statistics(weekPeriod, monthPeriod, userData.userId);
+    data.email = userData.email;
 
     render('summary.ejs', data);
 }
@@ -54,9 +61,18 @@ const getWeekPeriod = (params) => {
     if (!params) {
         return defaultPeriod;
     }
-    const start = params.get('weekStart') ? params.get('weekStart') : defaultPeriod.start;
-    const end = params.get('weekEnd')? params.get('weekEnd') : defaultPeriod.end;
-    return { start, end }
+
+    const weekDatePicker = params.get('week'); //2020-w48
+    if (!weekDatePicker) {
+        return defaultPeriod;
+    }
+
+    const week = Number(weekDatePicker.substring(6));
+
+    return weekByWeekNumber(week);
+    // const start = params.get('weekStart') ? params.get('weekStart') : defaultPeriod.start;
+    // const end = params.get('weekEnd')? params.get('weekEnd') : defaultPeriod.end;
+    // return { start, end }
 }
 
 const getMonthPeriod = (params) => {
@@ -64,9 +80,35 @@ const getMonthPeriod = (params) => {
     if (!params) {
         return defaultPeriod;
     }
-    const start = params.get('monthStart') ? params.get('monthStart') : defaultPeriod.start;
-    const end = params.get('monthEnd') ? params.get('monthEnd') : defaultPeriod.end;
-    return { start, end }
+
+    const monthDatePicker = params.get('month');//2020-11
+    if (!monthDatePicker) {
+        return defaultPeriod;
+    }
+
+    const year = Number(monthDatePicker.substring(0,4));
+    const month = Number(monthDatePicker.substring(5));
+
+    return monthByMonthNumber(month, year);
+
+    // const start = params.get('monthStart') ? params.get('monthStart') : defaultPeriod.start;
+    // const end = params.get('monthEnd') ? params.get('monthEnd') : defaultPeriod.end;
+    // return { start, end }
 }
+
+// const tt = () => {
+//     const body = request.body();
+//     const params = await body.value;
+//
+//     const weekDatePicker = params.get('week'); //2020-w48
+//     const monthDatePicker = params.get('month');//2020-11
+//
+//     const year = Number(monthDatePicker.substring(0,3));
+//     const month = Number(monthDatePicker.substring(5));
+//     const week = Number(weekDatePicker.substring(6));
+//
+//     const weekPeriod = timeHelper.weekByWeekNumber(week);
+//     const monthPeriod = timeHelper.monthByMonthNumber(month, year);
+// }
 
 export {allStatisticsDefault, allStatistics}

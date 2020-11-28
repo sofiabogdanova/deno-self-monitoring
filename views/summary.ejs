@@ -1,6 +1,8 @@
 <%- include('./partials/header.ejs') %>
 <div class="container">
     <h3>Summary</h3>
+    <h5>Note! By default, values are calculated for previous month and previous week.</h5>
+    <br/>
     <div class="row">
         <div class="col-md-6">
             <div class="card">
@@ -15,19 +17,10 @@
             </div>
             <br/>
             <form method="POST" action="/behavior/summary">
-                <div>
-                    <label for="weekStart">Start</label>
-                    <input type="date" name="weekStart" id="weekStart" value="<%= weekStart %>"/>
-                </div>
+                <label for="week">Select week</label>
+                <input type="week" name="week" id="week">
+                <input type="submit" value="Calculate week average" class="btn btn-info">
                 <br/>
-
-                <div>
-                    <label for="weekEnd">End</label>
-                    <input type="date" name="weekEnd" id="weekEnd" value="<%= weekEnd %>"/>
-                </div>
-                <br/>
-
-                <input type="submit" value="Calculate week average" class="btn btn-info"/>
             </form>
         </div>
         <div class="col-md-6">
@@ -44,19 +37,9 @@
 
             <br/>
             <form method="POST" action="/behavior/summary">
-                <div>
-                    <label for="monthStart">Start</label>
-                    <input type="date" name="monthStart" id="monthStart" value="<%= monthStart %>"/>
-                </div>
-                <br/>
-
-                <div>
-                    <label for="monthEnd">End</label>
-                    <input type="date" name="monthEnd" id="monthEnd" value="<%= monthEnd %>"/>
-                </div>
-                <br/>
-
-                <input type="submit" value="Calculate month average" class="btn btn-info"/>
+                <label for="month">Select month</label>
+                <input type="month" name="month" id="month">
+                <input type="submit" value="Calculate month average" class="btn btn-info">
             </form>
         </div>
     </div>

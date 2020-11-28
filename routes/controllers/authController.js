@@ -44,9 +44,6 @@ const showRegisterForm = async ({render}) => {
 const authenticate = async ({request, response, session, render}) => {
     const body = request.body();
     const params = await body.value;
-
-    // const email = params.get('email');
-    // const password = params.get('password');
     const data = await getData(request);
 
     // check if the email exists in the database
