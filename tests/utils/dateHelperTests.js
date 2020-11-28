@@ -5,7 +5,7 @@ DateHelper.prototype.currentDate = () => {
     return new Date(2020, 0, 15, 13, 45, 11);
 }
 
-Deno.test('Today should return correct value', async () => {
+Deno.test('Today should return correct value', () => {
     // arrange
     const expected = "2020-01-15";
 
@@ -16,7 +16,7 @@ Deno.test('Today should return correct value', async () => {
     assertEquals(actual, expected);
 })
 
-Deno.test('Yesterday should return correct value', async () => {
+Deno.test('Yesterday should return correct value', () => {
     // arrange
     const expected = "2020-01-14";
 
@@ -27,7 +27,18 @@ Deno.test('Yesterday should return correct value', async () => {
     assertEquals(actual, expected);
 })
 
-Deno.test('PreviousWeek should return correct value', async () => {
+Deno.test('Week should return correct value', () => {
+    // arrange
+    const expected = 3;
+
+    // act
+    const actual = new DateHelper().week();
+
+    // assert
+    assertEquals(actual, expected);
+});
+
+Deno.test('PreviousWeek should return correct value', () => {
     // arrange
     const expected = {
         start: "2020-01-06",
@@ -41,7 +52,21 @@ Deno.test('PreviousWeek should return correct value', async () => {
     assertEquals(actual, expected);
 })
 
-Deno.test('PreviousMonth should return correct value', async () => {
+Deno.test('WeekByWeekNumber should return correct value', () => {
+    // arrange
+    const expected = {
+        start: '2020-02-10',
+        end: '2020-02-16'
+    };
+
+    // act
+    const actual = new DateHelper().weekByWeekNumber(7);
+
+    // assert
+    assertEquals(actual, expected);
+})
+
+Deno.test('PreviousMonth should return correct value', () => {
     // arrange
     const expected = {
         start: "2019-12-01",
@@ -50,6 +75,20 @@ Deno.test('PreviousMonth should return correct value', async () => {
 
     // act
     const actual = new DateHelper().previousMonth();
+
+    // assert
+    assertEquals(actual, expected);
+})
+
+Deno.test('MonthByMonthNumber should return correct value', () => {
+    // arrange
+    const expected = {
+        start: new Date(2020, 2, 1),
+        end: new Date(2020, 3, 0)
+    };
+
+    // act
+    const actual = new DateHelper().monthByMonthNumber(3, 2020);
 
     // assert
     assertEquals(actual, expected);

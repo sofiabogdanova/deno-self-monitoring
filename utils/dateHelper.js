@@ -17,6 +17,11 @@ export default class DateHelper {
         return format(currentDate);
     }
 
+    week() {
+        const januaryFirst = new Date(this.currentDate().getFullYear(), 0, 1);
+        return Math.ceil((((this.currentDate() - januaryFirst) / 86400000) + januaryFirst.getDay() + 1) / 7);
+    }
+
     previousWeek() {
         const currentDate = this.currentDate();
         currentDate.setTime(currentDate.getTime() - (currentDate.getDay() ? currentDate.getDay() : 7) * 24 * 60 * 60 * 1000);
@@ -27,6 +32,19 @@ export default class DateHelper {
             start: start,
             end: end
         }
+    }
+
+    weekByWeekNumber(weekNumber) {
+        const currentDate = this.currentDate();
+        let numOfDaysPastSinceLastMonday = eval(currentDate.getDay() - 1);
+        currentDate.setDate(currentDate.getDate() - numOfDaysPastSinceLastMonday);
+        let weekNoToday = this.week();
+        let weeksInTheFuture = eval(weekNumber - weekNoToday);
+        currentDate.setDate(currentDate.getDate() + eval(7 * weeksInTheFuture));
+        const start = format(currentDate);
+        currentDate.setDate(currentDate.getDate() + 6);
+        const end = format(currentDate);
+        return {start, end}
     }
 
     previousMonth() {
@@ -43,28 +61,10 @@ export default class DateHelper {
         }
     }
 
-    monthByMonthNumber = (month, year) => {
+    monthByMonthNumber(month, year) {
         const start = new Date(year, month - 1, 1);
-        const end = new Date(2008, month, 0);
+        const end = new Date(year, month, 0);
         return {start, end};
     }
-
-    weekByWeekNumber = (weekNumber) => {
-        let currentDate = new Date();
-        let numOfDaysPastSinceLastMonday = eval(currentDate.getDay() - 1);
-        currentDate.setDate(currentDate.getDate() - numOfDaysPastSinceLastMonday);
-        let weekNoToday = currentDate.getWeek();
-        let weeksInTheFuture = eval(weekNumber - weekNoToday);
-        currentDate.setDate(currentDate.getDate() + eval(7 * weeksInTheFuture));
-        const start = format(currentDate);
-        currentDate.setDate(currentDate.getDate() + 6);
-        const end = format(currentDate);
-        return {start, end}
-    }
-}
-
-Date.prototype.getWeek = function () {
-    const januaryFirst = new Date(this.getFullYear(), 0, 1);
-    return Math.ceil((((this - januaryFirst) / 86400000) + januaryFirst.getDay() + 1) / 7);
 }
 
