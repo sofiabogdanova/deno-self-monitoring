@@ -1,4 +1,4 @@
-import {format} from './formatHelper'
+import {format} from './formatHelper.js'
 
 export default class DateHelper {
     currentDate() {
