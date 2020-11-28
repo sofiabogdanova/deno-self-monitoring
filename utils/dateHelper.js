@@ -17,7 +17,7 @@ export default class DateHelper {
 
     week() {
         const januaryFirst = new Date(this.currentDate().getFullYear(), 0, 1);
-        return Math.ceil((((this.currentDate() - januaryFirst) / 86400000) + januaryFirst.getDay() + 1) / 7)-1;
+        return Math.ceil((((this.currentDate() - januaryFirst) / 86400000) + januaryFirst.getDay() + 1) / 7);
     }
 
     previousWeek() {
