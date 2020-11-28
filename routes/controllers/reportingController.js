@@ -91,7 +91,11 @@ const redirectToReporting = (response) => {
 };
 
 const checkIfReportExists = async(day, userId, type) => {
-    const report = await reportingService.getReport(day, userId, type);
+
+    const report = type === 'morning_info' ?
+        await reportingService.getMorningReport(day, userId, type):
+        await reportingService.getEveningReport(day, userId, type);
+
     return report !== null;
 }
 
