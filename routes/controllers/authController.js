@@ -24,8 +24,11 @@ const getData = async (request) => {
     if (request) {
         const body = request.body();
         const params = await body.value;
-        data.password = params.get("password");
-        data.email = params.get("email");
+
+        if (params) {
+            data.password = params.get("password");
+            data.email = params.get("email");
+        }
     }
 
     return data;
@@ -80,7 +83,7 @@ const register = async ({request, response, render, session}) => {
     const params = await body.value;
 
     const data = await getData(request);
-    const verification = params.get('password-verification');
+    const verification = params ? params.get('password-verification') : '';
 
     //validation
     const [passes, errors] = await validasaur.validate({

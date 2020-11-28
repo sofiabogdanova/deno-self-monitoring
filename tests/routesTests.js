@@ -21,6 +21,14 @@ Deno.test('GET to /behavior/summary should return HTTP Unauthorized', async () =
 });
 
 // router.post('/behavior/summary', statisticsController.allStatistics);
+Deno.test('POST to /behavior/summary should return HTTP Unauthorized', async () => {
+    const app = await initApp('../')
+
+    const request = await superoak(app);
+    await request
+        .post('/behavior/summary')
+        .expect(401);
+});
 
 // reportingController
 Deno.test('GET to /behavior/reporting should return HTTP Unauthorized', async () => {
@@ -41,8 +49,23 @@ Deno.test('GET to /behavior/summary/:form should return HTTP Unauthorized', asyn
         .expect(401);
 });
 
-// router.post('/behavior/reporting/morning', reportingController.postMorningReporting);
-// router.post('/behavior/reporting/evening', reportingController.postEveningReporting);
+Deno.test('POST to /behavior/reporting/morning should return HTTP Unauthorized', async () => {
+    const app = await initApp('../')
+
+    const request = await superoak(app);
+    await request
+        .post('/behavior/reporting/morning', {})
+        .expect(401);
+});
+
+Deno.test('POST to /behavior/reporting/evening should return HTTP Unauthorized', async () => {
+    const app = await initApp('../')
+
+    const request = await superoak(app);
+    await request
+        .post('/behavior/reporting/evening', {})
+        .expect(401);
+});
 
 // authController
 Deno.test('GET to /behavior/summary should return HTTP OK', async () => {
@@ -53,7 +76,15 @@ Deno.test('GET to /behavior/summary should return HTTP OK', async () => {
         .get('/auth/login')
         .expect(200);
 });
-// router.post('/auth/login', authController.authenticate)
+
+Deno.test('POST to /auth/login should return HTTP OK', async () => {
+    const app = await initApp('../')
+
+    const request = await superoak(app);
+    await request
+        .post('/auth/login', {})
+        .expect(200);
+});
 
 Deno.test('GET to /auth/register should return HTTP OK', async () => {
     const app = await initApp('../')
@@ -63,7 +94,15 @@ Deno.test('GET to /auth/register should return HTTP OK', async () => {
         .get('/auth/register')
         .expect(200);
 });
-// router.post('/auth/register', authController.register)
+
+Deno.test('POST to /behavior/summary should return HTTP Unauthorized', async () => {
+    const app = await initApp('../')
+
+    const request = await superoak(app);
+    await request
+        .post('/auth/register', {})
+        .expect(200);
+});
 
 Deno.test('GET to /auth/logout should return HTTP OK', async () => {
     const app = await initApp('../')
