@@ -15,11 +15,13 @@ const getData = async (session) => {
 
     return data;
 };
+import DateHelper from '../../utils/dateHelper.js'
 
 const allStatisticsDefault = async ({session, render}) => {
+    const dateHelper = new DateHelper();
     const userData = await getData(session);
-    const monthPeriod = previousMonth();
-    const weekPeriod = previousWeek();
+    const monthPeriod = dateHelper.previousMonth();
+    const weekPeriod = dateHelper.previousWeek();
 
     const data = await statistics(weekPeriod, monthPeriod, userData.userId);
     data.email = userData.email;
@@ -57,7 +59,8 @@ const statistics = async(weekPeriod, monthPeriod, userId) => {
 }
 
 const getWeekPeriod = (params) => {
-    const defaultPeriod = previousWeek();
+    const dateHelper = new DateHelper();
+    const defaultPeriod = dateHelper.previousWeek();
     if (!params) {
         return defaultPeriod;
     }
@@ -76,7 +79,8 @@ const getWeekPeriod = (params) => {
 }
 
 const getMonthPeriod = (params) => {
-    const defaultPeriod = previousMonth();
+    const dateHelper = new DateHelper();
+    const defaultPeriod = dateHelper.previousMonth();
     if (!params) {
         return defaultPeriod;
     }

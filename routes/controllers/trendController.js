@@ -1,5 +1,5 @@
 import * as statisticsService from '../../services/statisticsService.js';
-import {today, yesterday} from '../../utils/dateHelper.js'
+import DateHelper from '../../utils/dateHelper.js'
 
 const data = {
     todayMood: {},
@@ -10,8 +10,9 @@ const data = {
 };
 
 const showMainTrends = async ({session, render}) => {
-    const todayMood = await statisticsService.averageMoodForAll(today());
-    const yesterdayMood = await statisticsService.averageMoodForAll(yesterday());
+    const dateHelper = new DateHelper();
+    const todayMood = await statisticsService.averageMoodForAll(dateHelper.today());
+    const yesterdayMood = await statisticsService.averageMoodForAll(dateHelper.yesterday());
 
     const displayText = (todayMood > yesterdayMood) ?
         'Things are looking bright today! :)' : 'Things are looking gloomy today... :(';
