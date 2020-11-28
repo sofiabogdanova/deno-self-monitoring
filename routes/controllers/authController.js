@@ -10,7 +10,8 @@ const clearData = (data) => {
     return {
         password: '',
         email: '',
-        errors: data.errors
+        errors: data.errors,
+        filledEmail: data.email
     };
 }
 
@@ -18,7 +19,8 @@ const getData = async (request) => {
     const data = {
         password: "",
         email: "",
-        errors: []
+        errors: [],
+        filledEmail: ''
     };
 
     if (request) {
@@ -45,15 +47,15 @@ const showRegisterForm = async ({render}) => {
 }
 
 const authenticate = async ({request, response, session, render}) => {
-    const body = request.body();
-    const params = await body.value;
     const data = await getData(request);
 
     // check if the email exists in the database
     const existingUser = await authService.getUser(data.email);
     if (!existingUser) {
         data.errors.push('Invalid email or password');
+        data.email='';
         render('login.ejs', clearData(data));
+        return;
     }
 
     const hash = existingUser.password;
@@ -61,7 +63,9 @@ const authenticate = async ({request, response, session, render}) => {
     const passwordCorrect = await bcrypt.compare(data.password, hash);
     if (!passwordCorrect) {
         data.errors.push('Invalid email or password');
+        data.email='';
         render('login.ejs', clearData(data));
+        return;
     }
 
     await session.set('authenticated', true);
@@ -93,15 +97,13 @@ const register = async ({request, response, render, session}) => {
     });
 
     if (!passes) {
-        data.password='';
-        render('register.ejs', data);
+        render('register.ejs', clearData(data));
         return;
     }
 
     if (data.password !== verification) {
         data.errors.push('The entered passwords did not match');
-        data.password='';
-        render('register.ejs', data);
+        render('register.ejs', clearData(data));
         return;
     }
 
