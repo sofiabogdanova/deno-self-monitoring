@@ -1,4 +1,4 @@
-import {assert, assertEquals} from '../../deps.js'
+import {assert, assertEquals} from '../deps.js'
 import {createUser, deleteUser, getUser} from '../../services/authService.js'
 
 Deno.test('Create user should create user', async () => {

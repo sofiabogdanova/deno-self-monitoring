@@ -12,18 +12,21 @@ const router = new Router();
 // router.get('/api/hello', helloApi.getHello);
 // router.post('/api/hello', helloApi.setHello);
 
+// trendController
 router.get('/', trendController.showMainTrends);
 
+// statisticsController
 router.get('/behavior/summary', statisticsController.allStatisticsDefault);
 router.post('/behavior/summary', statisticsController.allStatistics);
 
+// reportingController
 router.get('/behavior/reporting', reportingController.showReporting);
-
 router.get('/behavior/reporting/:form', reportingController.showReportingForm);
 
 router.post('/behavior/reporting/morning', reportingController.postMorningReporting);
 router.post('/behavior/reporting/evening', reportingController.postEveningReporting);
 
+// authController
 router.get('/auth/login', authController.showLoginForm)
 router.post('/auth/login', authController.authenticate)
 
