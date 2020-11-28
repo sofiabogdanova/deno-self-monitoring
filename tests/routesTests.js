@@ -1,7 +1,7 @@
 import {superoak} from './deps.js'
 import {initApp} from '../initApp.js';
 
-Deno.test('GET to / should HTTP OK', async () => {
+Deno.test('GET to / should return HTTP OK', async () => {
     const app = await initApp('../')
 
     const request = await superoak(app);
@@ -10,20 +10,66 @@ Deno.test('GET to / should HTTP OK', async () => {
         .expect(200);
 });
 
+// statisticsController
+Deno.test('GET to /behavior/summary should return HTTP Unauthorized', async () => {
+    const app = await initApp('../')
 
-/*import { Application, Router } from "https://deno.land/x/oak@v6.2.0/mod.ts";
-import { superoak } from "https://deno.land/x/superoak@2.3.1/mod.ts";
-
-const router = new Router();
-router.get("/", (ctx) => {
-    ctx.response.body = "Hello Deno!";
+    const request = await superoak(app);
+    await request
+        .get('/behavior/summary')
+        .expect(401);
 });
 
-const app = new Application();
-app.use(router.routes());
-app.use(router.allowedMethods());
+// router.post('/behavior/summary', statisticsController.allStatistics);
 
-Deno.test("it should support the Oak framework", async () => {
+// reportingController
+Deno.test('GET to /behavior/reporting should return HTTP Unauthorized', async () => {
+    const app = await initApp('../')
+
     const request = await superoak(app);
-    await request.get("/").expect("Hello Deno!");
-});*/
+    await request
+        .get('/behavior/reporting')
+        .expect(401);
+});
+
+Deno.test('GET to /behavior/summary/:form should return HTTP Unauthorized', async () => {
+    const app = await initApp('../')
+
+    const request = await superoak(app);
+    await request
+        .get('/behavior/summary/1')
+        .expect(401);
+});
+
+// router.post('/behavior/reporting/morning', reportingController.postMorningReporting);
+// router.post('/behavior/reporting/evening', reportingController.postEveningReporting);
+
+// authController
+Deno.test('GET to /behavior/summary should return HTTP OK', async () => {
+    const app = await initApp('../')
+
+    const request = await superoak(app);
+    await request
+        .get('/auth/login')
+        .expect(200);
+});
+// router.post('/auth/login', authController.authenticate)
+
+Deno.test('GET to /auth/register should return HTTP OK', async () => {
+    const app = await initApp('../')
+
+    const request = await superoak(app);
+    await request
+        .get('/auth/register')
+        .expect(200);
+});
+// router.post('/auth/register', authController.register)
+
+Deno.test('GET to /auth/logout should return HTTP OK', async () => {
+    const app = await initApp('../')
+
+    const request = await superoak(app);
+    await request
+        .get('/auth/logout')
+        .expect(200);
+});
