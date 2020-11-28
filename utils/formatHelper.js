@@ -4,4 +4,13 @@ const format = (date) => {
         ('0' + date.getDate()).slice(-2);
 }
 
-export {format}
+const currentTime = () => {
+    const now = new Date();
+    const hrs = now.getHours();
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+    const ms = now.getMilliseconds();
+    return `${hrs}:${minutes}:${seconds}:${ms}`;
+}
+
+export {format, currentTime}

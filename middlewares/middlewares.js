@@ -1,6 +1,6 @@
-import { send } from '../deps.js';
+import {currentTime} from '../utils/formatHelper.js'
 
-const errorMiddleware = async(context, next) => {
+const errorMiddleware = async (context, next) => {
     try {
         await next();
     } catch (e) {
@@ -8,11 +8,19 @@ const errorMiddleware = async(context, next) => {
     }
 }
 
-const requestTimingMiddleware = async({ request }, next) => {
+const requestTimingMiddleware = async ({request, session}, next) => {
+    const time = currentTime();
     const start = Date.now();
     await next();
     const ms = Date.now() - start;
-    console.log(`${request.method} ${request.url.pathname} - ${ms} ms`);
+
+    let userInfo = 'not authenticated';
+    const user = await session.get('user');
+    if (user) {
+        userInfo = `by user_id = ${user.id}`;
+    }
+
+    console.log(`Time ${time}: ${request.method} ${request.url.pathname} - ${ms} ms (${userInfo})`);
 }
 
 // const serveStaticFilesMiddleware = async(context, next) => {
@@ -28,4 +36,4 @@ const requestTimingMiddleware = async({ request }, next) => {
 //     }
 // }
 
-export { errorMiddleware, requestTimingMiddleware /*, serveStaticFilesMiddleware*/ };
+export {errorMiddleware, requestTimingMiddleware /*, serveStaticFilesMiddleware*/};
