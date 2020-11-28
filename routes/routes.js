@@ -3,9 +3,13 @@ import * as reportingController from "./controllers/reportingController.js";
 import * as authController from "./controllers/authController.js";
 import * as trendController from "./controllers/trendController.js";
 import * as statisticsController from "./controllers/statisticsController.js";
-import * as helloApi from "./apis/helloApi.js";
+import * as statisticsApi from "./apis/statisticsApi.js";
 
 const router = new Router();
+
+//api
+router.get('/api/summary/', statisticsApi.lastWeekStatistics)
+router.get('/api/summary/:year/:month/:day', statisticsApi.dailyStatistics)
 
 // trendController
 router.get('/', trendController.showMainTrends);

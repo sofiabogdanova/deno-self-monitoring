@@ -17,20 +17,28 @@ const averageMoodForUser = async (day, userId) => {
 }
 
 const averageMoodForAll = async (day) => {
-    const morningMood = await executeQuery("SELECT mood FROM morning_info WHERE day=$1",day);
+    const morningMood = await executeQuery("SELECT mood FROM morning_info WHERE day=$1", day);
 
-    const eveningMood = await executeQuery("SELECT mood FROM evening_info WHERE day=$1",day);
+    const eveningMood = await executeQuery("SELECT mood FROM evening_info WHERE day=$1", day);
 
     const eveningValues = noData(eveningMood) ? [] : eveningMood.rowsOfObjects().map(obj => Number(obj.mood));
     const morningValues = noData(morningMood) ? [] : morningMood.rowsOfObjects().map(obj => Number(obj.mood));
     return average(eveningValues, morningValues);
 }
 
-const averageMonthMoodForUser = async() => {
+const averageMonthMoodForUser = async () => {
 
 }
 
-const averageMonthMoodForAll = async() => {
+const averageMonthMoodForAll = async () => {
+
+}
+
+const dailyStatistics = async (day, month, year) => {
+
+}
+
+const lastWeekStatistics = async (day, month, year) => {
 
 }
 
@@ -44,7 +52,7 @@ const getAllStatistic = async (period, userId) => {
     }
 }
 
-const averageSleepTime = async(period, userId) => {
+const averageSleepTime = async (period, userId) => {
     const sleepDuration = await executeQuery("SELECT sleep_duration FROM morning_info WHERE day between $1 and $2 " +
         "and user_id=$3",
         period.start,
@@ -56,7 +64,7 @@ const averageSleepTime = async(period, userId) => {
     return average(sleepValues, []);
 }
 
-const averageExerciseTime = async(period, userId) => {
+const averageExerciseTime = async (period, userId) => {
     const exerciseTime = await executeQuery("SELECT exercise_time FROM evening_info WHERE day between $1 and $2 " +
         "and user_id=$3",
         period.start,
@@ -68,7 +76,7 @@ const averageExerciseTime = async(period, userId) => {
     return average(exerciseValues, []);
 }
 
-const averageStudyTime = async(period, userId) => {
+const averageStudyTime = async (period, userId) => {
     const studyingTime = await executeQuery("SELECT studying_time FROM evening_info WHERE day between $1 and $2 " +
         "and user_id=$3",
         period.start,
@@ -81,7 +89,7 @@ const averageStudyTime = async(period, userId) => {
 }
 
 
-const averageSleepQuality = async(period, userId) => {
+const averageSleepQuality = async (period, userId) => {
     const sleepQuality = await executeQuery("SELECT sleep_quality FROM morning_info WHERE day between $1 and $2 " +
         "and user_id=$3",
         period.start,
@@ -93,7 +101,7 @@ const averageSleepQuality = async(period, userId) => {
     return average(sleepQualityValues, []);
 }
 
-const averageMood = async(period, userId) => {
+const averageMood = async (period, userId) => {
     const mood = await executeQuery("SELECT mood FROM evening_info WHERE day between $1 and $2 " +
         "and user_id=$3",
         period.start,
@@ -112,7 +120,15 @@ const noData = (rows) => {
 const average = (arr1, arr2) => {
     const sum = arr1.reduce((a, b) => a + b, 0) + arr2.reduce((a, b) => a + b, 0);
     const count = arr1.length + arr2.length;
-    return count === 0 ? 0 : sum/count;
+    return count === 0 ? 0 : sum / count;
 }
 
-export {averageMoodForUser, averageMoodForAll, averageMonthMoodForUser, averageMonthMoodForAll, getAllStatistic}
+export {
+    averageMoodForUser,
+    averageMoodForAll,
+    averageMonthMoodForUser,
+    averageMonthMoodForAll,
+    getAllStatistic,
+    lastWeekStatistics,
+    dailyStatistics
+}
