@@ -1,8 +1,12 @@
-import {superoak} from './deps.js'
+import {superoak, path} from './deps.js'
 import {initApp} from '../initApp.js';
 
+const __dirname = path.dirname(path.fromFileUrl(import.meta.url));
+
 Deno.test('GET to / should return HTTP OK', async () => {
-    const app = await initApp('../')
+    console.log(__dirname + '\\..\\')
+
+    const app = await initApp(__dirname + '\\..\\')
 
     const request = await superoak(app);
     await request
@@ -12,7 +16,7 @@ Deno.test('GET to / should return HTTP OK', async () => {
 
 // statisticsController
 Deno.test('GET to /behavior/summary should return HTTP Unauthorized', async () => {
-    const app = await initApp('../')
+    const app = await initApp(__dirname + '\\..\\')
 
     const request = await superoak(app);
     await request
@@ -22,7 +26,7 @@ Deno.test('GET to /behavior/summary should return HTTP Unauthorized', async () =
 
 // router.post('/behavior/summary', statisticsController.allStatistics);
 Deno.test('POST to /behavior/summary should return HTTP Unauthorized', async () => {
-    const app = await initApp('../')
+    const app = await initApp(__dirname + '\\..\\')
 
     const request = await superoak(app);
     await request
@@ -32,7 +36,7 @@ Deno.test('POST to /behavior/summary should return HTTP Unauthorized', async () 
 
 // reportingController
 Deno.test('GET to /behavior/reporting should return HTTP Unauthorized', async () => {
-    const app = await initApp('../')
+    const app = await initApp(__dirname + '\\..\\')
 
     const request = await superoak(app);
     await request
@@ -41,7 +45,7 @@ Deno.test('GET to /behavior/reporting should return HTTP Unauthorized', async ()
 });
 
 Deno.test('GET to /behavior/summary/:form should return HTTP Unauthorized', async () => {
-    const app = await initApp('../')
+    const app = await initApp(__dirname + '\\..\\')
 
     const request = await superoak(app);
     await request
@@ -50,7 +54,7 @@ Deno.test('GET to /behavior/summary/:form should return HTTP Unauthorized', asyn
 });
 
 Deno.test('POST to /behavior/reporting/morning should return HTTP Unauthorized', async () => {
-    const app = await initApp('../')
+    const app = await initApp(__dirname + '\\..\\')
 
     const request = await superoak(app);
     await request
@@ -59,7 +63,7 @@ Deno.test('POST to /behavior/reporting/morning should return HTTP Unauthorized',
 });
 
 Deno.test('POST to /behavior/reporting/evening should return HTTP Unauthorized', async () => {
-    const app = await initApp('../')
+    const app = await initApp(__dirname + '\\..\\')
 
     const request = await superoak(app);
     await request
@@ -69,7 +73,7 @@ Deno.test('POST to /behavior/reporting/evening should return HTTP Unauthorized',
 
 // authController
 Deno.test('GET to /behavior/summary should return HTTP OK', async () => {
-    const app = await initApp('../')
+    const app = await initApp(__dirname + '\\..\\')
 
     const request = await superoak(app);
     await request
@@ -78,7 +82,7 @@ Deno.test('GET to /behavior/summary should return HTTP OK', async () => {
 });
 
 Deno.test('POST to /auth/login should return HTTP OK', async () => {
-    const app = await initApp('../')
+    const app = await initApp(__dirname + '\\..\\')
 
     const request = await superoak(app);
     await request
@@ -87,7 +91,7 @@ Deno.test('POST to /auth/login should return HTTP OK', async () => {
 });
 
 Deno.test('GET to /auth/register should return HTTP OK', async () => {
-    const app = await initApp('../')
+    const app = await initApp(__dirname + '\\..\\')
 
     const request = await superoak(app);
     await request
@@ -96,7 +100,7 @@ Deno.test('GET to /auth/register should return HTTP OK', async () => {
 });
 
 Deno.test('POST to /behavior/summary should return HTTP Unauthorized', async () => {
-    const app = await initApp('../')
+    const app = await initApp(__dirname + '\\..\\')
 
     const request = await superoak(app);
     await request
@@ -105,7 +109,7 @@ Deno.test('POST to /behavior/summary should return HTTP Unauthorized', async () 
 });
 
 Deno.test('GET to /auth/logout should return HTTP OK', async () => {
-    const app = await initApp('../')
+    const app = await initApp(__dirname + '\\..\\')
 
     const request = await superoak(app);
     await request
