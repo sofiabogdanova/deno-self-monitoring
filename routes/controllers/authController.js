@@ -60,8 +60,6 @@ const authenticate = async ({request, response, session, render}) => {
 
     const passwordCorrect = await bcrypt.compare(data.password, hash);
     if (!passwordCorrect) {
-        // response.status = 401;
-        // return;
         data.errors.push('Invalid email or password');
         render('login.ejs', clearData(data));
     }
@@ -95,21 +93,17 @@ const register = async ({request, response, render, session}) => {
     });
 
     if (!passes) {
-        render('register.ejs', clearData(data));
+        data.password='';
+        render('register.ejs', data);
         return;
     }
 
     if (data.password !== verification) {
         data.errors.push('The entered passwords did not match');
-        render('register.ejs', clearData(data));
+        data.password='';
+        render('register.ejs', data);
         return;
     }
-
-    // if (data.password.length < 4) {
-    //     data.errors.push('Password should be more then 4 symbols');
-    //     render('register.ejs', clearData(data));
-    //     return;
-    // }
 
     // check if there already exists such an email in the database
     // -- if yes, respond with a message telling that the user
