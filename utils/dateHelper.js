@@ -1,6 +1,4 @@
-const format = (date) => {
-    return date.toISOString().slice(0, 10);
-}
+import {format} from './formatHelper'
 
 export default class DateHelper {
     currentDate() {
