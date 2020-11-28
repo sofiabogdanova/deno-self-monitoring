@@ -1,10 +1,11 @@
 import * as statisticsService from '../../services/statisticsService.js';
-import {previousMonth, previousWeek} from '../../utils/dateHelper.js'
+import DateHelper from '../../utils/dateHelper.js'
 
 const allStatisticsDefault = async ({session, render}) => {
+    const dateHelper = new DateHelper();
     const userId = 1; //get from session
-    const monthPeriod = previousMonth();
-    const weekPeriod = previousWeek();
+    const monthPeriod = dateHelper.previousMonth();
+    const weekPeriod = dateHelper.previousWeek();
 
     // const weeklyStatistics = await statisticsService.getAllStatistic(weekPeriod, userId);
     // const monthlyStatistics = await statisticsService.getAllStatistic(monthPeriod, userId);
@@ -50,7 +51,8 @@ const statistics = async(weekPeriod, monthPeriod, userId) => {
 }
 
 const getWeekPeriod = (params) => {
-    const defaultPeriod = previousWeek();
+    const dateHelper = new DateHelper();
+    const defaultPeriod = dateHelper.previousWeek();
     if (!params) {
         return defaultPeriod;
     }
@@ -60,7 +62,8 @@ const getWeekPeriod = (params) => {
 }
 
 const getMonthPeriod = (params) => {
-    const defaultPeriod = previousMonth();
+    const dateHelper = new DateHelper();
+    const defaultPeriod = dateHelper.previousMonth();
     if (!params) {
         return defaultPeriod;
     }

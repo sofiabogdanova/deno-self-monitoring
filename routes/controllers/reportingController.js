@@ -1,5 +1,5 @@
 import * as reportingService from "../../services/reportingService.js";
-import {today} from "../../utils/dateHelper.js"
+import DateHelper from "../../utils/dateHelper.js"
 
 const getData = async (session) => {
     const data = {
@@ -14,7 +14,7 @@ const getData = async (session) => {
         const user = await session.get('user');
         data.email = user.email;
         data.userId = user.id;
-        data.today = today();
+        data.today = new DateHelper().today();
     }
 
     return data;
