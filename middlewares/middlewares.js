@@ -36,4 +36,17 @@ const requestTimingMiddleware = async ({request, session}, next) => {
 //     }
 // }
 
-export {errorMiddleware, requestTimingMiddleware /*, serveStaticFilesMiddleware*/};
+const accessMiddleware = async ({request, response, session}, next) => {
+    if (request.url.pathname.startsWith('/behavior')) {
+        if (session && await session.get('authenticated')) {
+            await next();
+        } else {
+            response.status = 302;
+            response.redirect('/auth/login');
+        }
+    } else {
+        await next();
+    }
+}
+
+export {errorMiddleware, requestTimingMiddleware, accessMiddleware /*, serveStaticFilesMiddleware*/};

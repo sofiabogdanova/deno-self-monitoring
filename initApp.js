@@ -16,17 +16,7 @@ const initApp = async (baseDir) => {
     }));
 
 //session middleware
-    app.use(async ({request, response, session}, next) => {
-        if (request.url.pathname.startsWith('/behavior')) {
-            if (session && await session.get('authenticated')) {
-                await next();
-            } else {
-                response.status = 401;
-            }
-        } else {
-            await next();
-        }
-    });
+    app.use(middleware.accessMiddleware);
 
     app.use(middleware.errorMiddleware);
     app.use(middleware.requestTimingMiddleware);
