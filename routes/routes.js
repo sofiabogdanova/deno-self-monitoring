@@ -8,7 +8,7 @@ import * as statisticsApi from "./apis/statisticsApi.js";
 const router = new Router();
 
 //api
-router.get('/api/summary/', statisticsApi.lastWeekStatistics)
+router.get('/api/summary', statisticsApi.lastWeekStatistics)
 router.get('/api/summary/:year/:month/:day', statisticsApi.dailyStatistics)
 
 // trendController

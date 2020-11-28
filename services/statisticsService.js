@@ -1,5 +1,5 @@
 import {executeQuery} from "../database/database.js";
-import {format} from "../utils/formatHelper";
+import {format} from "../utils/formatHelper.js";
 
 const averageMoodForUser = async (day, userId) => {
     const morningMood = await executeQuery("SELECT mood FROM morning_info WHERE day=$1 and user_id=$2",
@@ -45,7 +45,23 @@ const dailyStatistics = async (day, month, year) => {
     return statistics;
 }
 
-const lastWeekStatistics = async (day, month, year) => {
+const lastWeekStatistics = async () => {
+    const statistics = [];
+
+    let i;
+    const today = new Date();
+    for (i = 1; i <= 7; i++) {
+        const date = format(new Date(today.getFullYear(), today.getMonth(), today.getDate()-i));
+        const period = {
+            start: date,
+            end: date
+        };
+        const data = await getAllStatistic(period);
+        data.date = date;
+        statistics.push(data);
+    }
+
+    return statistics;
 }
 
 const getAllStatistic = async (period, userId) => {
@@ -65,7 +81,7 @@ const averageSleepTime = async (period, userId) => {
 }
 
 const averageExerciseTime = async (period, userId) => {
-    const duration = exerciseTime(period, userId);
+    const duration = await exerciseTime(period, userId);
     const exerciseValues = noData(duration) ? [] : duration.rowsOfObjects().map(obj => Number(obj.exercise_time));
     return average(exerciseValues, []);
 }
@@ -83,7 +99,7 @@ const averageSleepQuality = async (period, userId) => {
 }
 
 const averageMood = async (period, userId) => {
-    const mood = moodQuality(period, userId);
+    const mood = await moodQuality(period, userId);
     const moodValues = noData(mood) ? [] : mood.rowsOfObjects().map(obj => Number(obj.mood));
     return average(moodValues, []);
 }
