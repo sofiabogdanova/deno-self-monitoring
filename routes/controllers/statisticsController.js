@@ -1,5 +1,5 @@
 import * as statisticsService from '../../services/statisticsService.js';
-import {previousMonth, previousWeek, today, monthByMonthNumber, weekByWeekNumber} from '../../utils/dateHelper.js'
+import DateHelper from '../../utils/dateHelper.js'
 
 const getData = async (session) => {
     const data = {
@@ -15,7 +15,7 @@ const getData = async (session) => {
 
     return data;
 };
-import DateHelper from '../../utils/dateHelper.js'
+
 
 const allStatisticsDefault = async ({session, render}) => {
     const dateHelper = new DateHelper();
@@ -72,7 +72,7 @@ const getWeekPeriod = (params) => {
 
     const week = Number(weekDatePicker.substring(6));
 
-    return weekByWeekNumber(week);
+    return dateHelper.weekByWeekNumber(week);
     // const start = params.get('weekStart') ? params.get('weekStart') : defaultPeriod.start;
     // const end = params.get('weekEnd')? params.get('weekEnd') : defaultPeriod.end;
     // return { start, end }
@@ -93,26 +93,11 @@ const getMonthPeriod = (params) => {
     const year = Number(monthDatePicker.substring(0,4));
     const month = Number(monthDatePicker.substring(5));
 
-    return monthByMonthNumber(month, year);
+    return dateHelper.monthByMonthNumber(month, year);
 
     // const start = params.get('monthStart') ? params.get('monthStart') : defaultPeriod.start;
     // const end = params.get('monthEnd') ? params.get('monthEnd') : defaultPeriod.end;
     // return { start, end }
 }
-
-// const tt = () => {
-//     const body = request.body();
-//     const params = await body.value;
-//
-//     const weekDatePicker = params.get('week'); //2020-w48
-//     const monthDatePicker = params.get('month');//2020-11
-//
-//     const year = Number(monthDatePicker.substring(0,3));
-//     const month = Number(monthDatePicker.substring(5));
-//     const week = Number(weekDatePicker.substring(6));
-//
-//     const weekPeriod = timeHelper.weekByWeekNumber(week);
-//     const monthPeriod = timeHelper.monthByMonthNumber(month, year);
-// }
 
 export {allStatisticsDefault, allStatistics}

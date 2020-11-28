@@ -13,16 +13,16 @@ export default class DateHelper {
 
     yesterday() {
         const currentDate = this.currentDate();
-    currentDate.setDate(currentDate.getDate() - 1);
-    return format(currentDate);
-}
+        currentDate.setDate(currentDate.getDate() - 1);
+        return format(currentDate);
+    }
 
     previousWeek() {
         const currentDate = this.currentDate();
         currentDate.setTime(currentDate.getTime() - (currentDate.getDay() ? currentDate.getDay() : 7) * 24 * 60 * 60 * 1000);
         const end = format(currentDate);
         currentDate.setTime(currentDate.getTime() - 6 * 24 * 60 * 60 * 1000);
-    const start = format(currentDate);
+        const start = format(currentDate);
         return {
             start: start,
             end: end
@@ -31,17 +31,40 @@ export default class DateHelper {
 
     previousMonth() {
         const currentDate = this.currentDate();
-    currentDate.setDate(0); // 0 will result in the last day of the previous month
-    const end = format(currentDate);
+        currentDate.setDate(0); // 0 will result in the last day of the previous month
+        const end = format(currentDate);
 
-    currentDate.setDate(1); // 1 will result in the first day of the month
-    const start = format(currentDate);
+        currentDate.setDate(1); // 1 will result in the first day of the month
+        const start = format(currentDate);
 
         return {
             start: start,
             end: end
         }
     }
+
+    monthByMonthNumber = (month, year) => {
+        const start = new Date(year, month - 1, 1);
+        const end = new Date(2008, month, 0);
+        return {start, end};
+    }
+
+    weekByWeekNumber = (weekNumber) => {
+        let currentDate = new Date();
+        let numOfDaysPastSinceLastMonday = eval(currentDate.getDay() - 1);
+        currentDate.setDate(currentDate.getDate() - numOfDaysPastSinceLastMonday);
+        let weekNoToday = currentDate.getWeek();
+        let weeksInTheFuture = eval(weekNumber - weekNoToday);
+        currentDate.setDate(currentDate.getDate() + eval(7 * weeksInTheFuture));
+        const start = format(currentDate);
+        currentDate.setDate(currentDate.getDate() + 6);
+        const end = format(currentDate);
+        return {start, end}
+    }
 }
 
-export {today, yesterday, previousWeek, previousMonth}
+Date.prototype.getWeek = function () {
+    const januaryFirst = new Date(this.getFullYear(), 0, 1);
+    return Math.ceil((((this - januaryFirst) / 86400000) + januaryFirst.getDay() + 1) / 7);
+}
+
