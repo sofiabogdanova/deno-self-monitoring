@@ -4,13 +4,13 @@ import {format} from "../utils/formatHelper.js";
 const averageMoodForUser = async (day, userId) => {
     const res = await executeQuery('SELECT * FROM get_average_mood_for_user($1, $2)', userId, day);
 
-    return noData(res) ? 0 : res.rowsOfObjects()[0].avg_mood;
+    return noData(res) ? 0 : parseValue(res.rowsOfObjects()[0].avg_mood);
 }
 
 const averageMoodForAll = async (day) => {
     const res = await executeQuery('SELECT * FROM get_average_mood_for_all($1)', day);
 
-    return noData(res) ? 0 : res.rowsOfObjects()[0].avg_mood;
+    return noData(res) ? 0 : parseValue(res.rowsOfObjects()[0].avg_mood);
 }
 
 const averageMonthMoodForUser = async () => {
@@ -74,11 +74,11 @@ const getAllStatistic = async (period, userId) => {
     if (!noData(res)) {
         const t = res.rowsOfObjects()[0];
 
-        averageSleepTime = t.avg_sleep_duration;
-        averageExerciseTime = t.avg_excercise_time;
-        averageStudyTime = t.avg_studying_time;
-        averageSleepQuality = t.avg_sleep_quality;
-        averageMood = t.avg_mood;
+        averageSleepTime = parseValue(t.avg_sleep_duration);
+        averageExerciseTime = parseValue(t.avg_excercise_time);
+        averageStudyTime = parseValue(t.avg_studying_time);
+        averageSleepQuality = parseValue(t.avg_sleep_quality);
+        averageMood = parseValue(t.avg_mood);
     }
 
     return {
@@ -93,6 +93,8 @@ const getAllStatistic = async (period, userId) => {
 const noData = (rows) => {
     return !rows || rows.rowCount < 1
 }
+
+const parseValue = (value) => value ? +value : 0;
 
 export {
     averageMoodForUser,
