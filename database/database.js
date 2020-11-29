@@ -1,13 +1,20 @@
 import {Pool} from "../deps.js";
-import {config} from "../config/config.js";
 
 const POOL_CONNECTIONS = 20;
-const dbPool = new Pool(config.database, POOL_CONNECTIONS, true);
+let dbPool;
+
+const getClient = async () => {
+    if (!dbPool) {
+        dbPool = new Pool({}, POOL_CONNECTIONS, true);
+    }
+
+    return await dbPool.connect()
+}
 
 const executeQuery = async (query, ...args) => {
     let client;
     try {
-        client = await dbPool.connect();
+        client = await getClient();
         return await client.query(query, ...args);
     } catch (e) {
         console.log(e);
