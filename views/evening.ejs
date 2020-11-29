@@ -4,33 +4,34 @@
         <div class="mx-auto">
             <h2>Add evening report</h2>
             <form method="POST" action="/behavior/reporting/evening">
+                <%- include('./partials/errors.ejs', { errors: errors }) %>
                 <div>
                     <label for="exerciseTime">Exercise time (in hours)</label>
-                    <input type="number" name="exerciseTime" step=".1" id="exerciseTime"/>
+                    <input type="number" name="exerciseTime" step=".1" min="0" id="exerciseTime" value="<%= eveningReport.exerciseTime %>"/>
                 </div>
                 <br/>
 
                 <div>
                     <label for="studyingTime">Studying time (in hours)</label>
-                    <input type="number" name="studyingTime" step=".1" id="studyingTime"/>
+                    <input type="number" name="studyingTime" step=".1" min="0" id="studyingTime" value="<%= eveningReport.studyingTime %>"/>
                 </div>
                 <br/>
 
                 <div>
                     <label for="eatingRegularity">Eating regularity</label>
-                    <input type="range" name="eatingRegularity" id="eatingRegularity" min="1" max="5"/>
+                    <input type="range" name="eatingRegularity" id="eatingRegularity" min="1" max="5" value="<%= eveningReport.eatingRegularity %>"/>
                 </div>
                 <br/>
 
                 <div>
                     <label for="eatingQuality">Eating quality</label>
-                    <input type="range" name="eatingQuality" id="eatingQuality" min="1" max="5"/>
+                    <input type="range" name="eatingQuality" id="eatingQuality" min="1" max="5" value="<%= eveningReport.eatingQuality %>"/>
                 </div>
                 <br/>
 
                 <div>
                     <label for="mood">Mood</label>
-                    <input type="range" name="mood" id="mood" min="1" max="5"/>
+                    <input type="range" name="mood" id="mood" min="1" max="5" value="<%= eveningReport.mood %>"/>
                 </div>
                 <br/>
 

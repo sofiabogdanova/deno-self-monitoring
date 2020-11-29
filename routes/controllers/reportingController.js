@@ -9,6 +9,18 @@ const getData = async (session) => {
         userId: "",
         morningReportExists: false,
         eveningReportExists: false,
+        morningReport : {
+            sleepDuration: 0,
+            sleepQuality: 3,
+            mood: 3
+        },
+        eveningReport : {
+            exerciseTime: 0,
+            studyingTime: 0,
+            eatingRegularity: 3,
+            eatingQuality: 3,
+            mood: 3,
+        },
         errors: []
     };
 
@@ -74,6 +86,7 @@ const postMorningReporting = async ({request, response, session, render}) => {
     });
 
     if (!passes) {
+        data.morningReport = morningReport;
         render('morning.ejs', data);
         return;
     }
@@ -97,6 +110,7 @@ const postEveningReporting = async ({request, response, session, render}) => {
     });
 
     if (!passes) {
+        data.eveningReport = eveningReport;
         render('evening.ejs', data);
         return;
     }
