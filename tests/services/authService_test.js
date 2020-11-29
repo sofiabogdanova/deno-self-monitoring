@@ -1,71 +1,91 @@
-import {assert, assertEquals} from '../deps.js'
+import {assert, assertEquals, path} from '../deps.js'
 import {createUser, deleteUser, getUser} from '../../services/authService.js'
+import {config} from '../../deps.js'
 
-Deno.test('Create user should create user', async () => {
-    // arrange
-    const email = 'test@test.com';
-    const password = 'qwertz';
+const __dirname = path.dirname(path.fromFileUrl(import.meta.url));
+await config({path: __dirname + '/../../.env.test', export: true});
 
-    let user = await getUser(email)
+Deno.test({
+    name: 'Create user should create user', async fn() {
+        // arrange
+        const email = 'test@test.com';
+        const password = 'qwertz';
 
-    assertEquals(user, null)
+        let user = await getUser(email)
 
-    // act
-    await createUser(email, password)
+        assertEquals(user, null)
 
-    // assert
-    user = await getUser(email)
-    assert(user != null, 'No user was found in database!')
-    assertEquals(user.email, email, 'Wrong user!')
+        // act
+        await createUser(email, password)
 
-    // teardown
-    await deleteUser(email)
+        // assert
+        user = await getUser(email)
+        assert(user != null, 'No user was found in database!')
+        assertEquals(user.email, email, 'Wrong user!')
+
+        // teardown
+        await deleteUser(email)
+    },
+    sanitizeResources: false,
+    sanitizeOps: false
 })
 
-Deno.test('Get user should get user', async () => {
-    // arrange
-    const email = 'test2@test.com';
-    const password = 'qwertz';
+Deno.test({
+    name: 'Get user should get user', async fn() {
+        // arrange
+        const email = 'test2@test.com';
+        const password = 'qwertz';
 
-    await createUser(email, password)
+        await createUser(email, password)
 
-    // act
-    const user = await getUser(email)
+        // act
+        const user = await getUser(email)
 
-    // assert
-    assert(user != null, 'No user was found in database!')
-    assertEquals(user.email, email, 'Wrong user!')
+        // assert
+        assert(user != null, 'No user was found in database!')
+        assertEquals(user.email, email, 'Wrong user!')
 
-    // teardown
-    await deleteUser(email)
+        // teardown
+        await deleteUser(email)
+    },
+    sanitizeResources: false,
+    sanitizeOps: false
 })
 
-Deno.test('Get user should return null when user doesn\'t exist in database', async () => {
-    // arrange
-    const email = 'notexistinguser@test.com';
+Deno.test({
+    name: 'Get user should return null when user doesn\'t exist in database', async fn() {
+        // arrange
+        const email = 'notexistinguser@test.com';
 
-    // act
-    const user = await getUser(email)
+        // act
+        const user = await getUser(email)
 
-    // assert
-    assert(user === null, 'User has been found when shouldn\'t!')
+        // assert
+        assert(user === null, 'User has been found when shouldn\'t!')
+    },
+    sanitizeResources: false,
+    sanitizeOps: false
 })
 
-Deno.test('Delete user should delete user', async () => {
-    // arrange
-    const email = 'test1@test.com';
-    const password = 'qwertz';
+Deno.test({
+    name: 'Delete user should delete user', async fn() {
+        // arrange
+        const email = 'test1@test.com';
+        const password = 'qwertz';
 
-    let user = await getUser(email)
-    assertEquals(user, null)
+        let user = await getUser(email)
+        assertEquals(user, null)
 
-    await createUser(email, password)
+        await createUser(email, password)
 
-    // act
-    const affectedRows = await deleteUser(email)
+        // act
+        const affectedRows = await deleteUser(email)
 
-    // assert
-    assert(affectedRows > 0, 'Nothing was deleted!')
-    user = await getUser(email)
-    assert(user == null, 'No was found in database!')
+        // assert
+        assert(affectedRows > 0, 'Nothing was deleted!')
+        user = await getUser(email)
+        assert(user == null, 'No was found in database!')
+    },
+    sanitizeResources: false,
+    sanitizeOps: false
 })
