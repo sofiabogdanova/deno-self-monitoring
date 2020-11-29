@@ -2,29 +2,15 @@ import {executeQuery} from "../database/database.js";
 import {format} from "../utils/formatHelper.js";
 
 const averageMoodForUser = async (day, userId) => {
-    const morningMood = await executeQuery("SELECT mood FROM morning_info WHERE day=$1 and user_id=$2",
-        day,
-        userId
-    );
+    const res = await executeQuery('SELECT * FROM get_average_mood_for_user($1, $2)', userId, day);
 
-    const eveningMood = await executeQuery("SELECT mood FROM evening_info WHERE day=$1 and user_id=$2",
-        day,
-        userId
-    );
-
-    const eveningValues = noData(eveningMood) ? [] : eveningMood.rowsOfObjects().map(obj => Number(obj.mood));
-    const morningValues = noData(morningMood) ? [] : morningMood.rowsOfObjects().map(obj => Number(obj.mood));
-    return average(eveningValues, morningValues);
+    return noData(res) ? 0 : res.rowsOfObjects()[0].avg_mood;
 }
 
 const averageMoodForAll = async (day) => {
-    const morningMood = await executeQuery("SELECT mood FROM morning_info WHERE day=$1", day);
+    const res = await executeQuery('SELECT * FROM get_average_mood_for_all($1)', day);
 
-    const eveningMood = await executeQuery("SELECT mood FROM evening_info WHERE day=$1", day);
-
-    const eveningValues = noData(eveningMood) ? [] : eveningMood.rowsOfObjects().map(obj => Number(obj.mood));
-    const morningValues = noData(morningMood) ? [] : morningMood.rowsOfObjects().map(obj => Number(obj.mood));
-    return average(eveningValues, morningValues);
+    return noData(res) ? 0 : res.rowsOfObjects()[0].avg_mood;
 }
 
 const averageMonthMoodForUser = async () => {
@@ -85,7 +71,7 @@ const getAllStatistic = async (period, userId) => {
     let averageSleepQuality = 0;
     let averageMood = 0;
 
-    if (res && res.rowCount > 0) {
+    if (!noData(res)) {
         const t = res.rowsOfObjects()[0];
 
         averageSleepTime = t.avg_sleep_duration;
@@ -106,12 +92,6 @@ const getAllStatistic = async (period, userId) => {
 
 const noData = (rows) => {
     return !rows || rows.rowCount < 1
-}
-
-const average = (arr1, arr2) => {
-    const sum = arr1.reduce((a, b) => a + b, 0) + arr2.reduce((a, b) => a + b, 0);
-    const count = arr1.length + arr2.length;
-    return count === 0 ? 0 : sum / count;
 }
 
 export {
