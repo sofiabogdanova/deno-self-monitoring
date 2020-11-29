@@ -23,18 +23,18 @@ const requestTimingMiddleware = async ({request, session}, next) => {
     console.log(`Time ${time}: ${request.method} ${request.url.pathname} - ${ms} ms (${userInfo})`);
 }
 
-// const serveStaticFilesMiddleware = async(context, next) => {
-//     if (context.request.url.pathname.startsWith('/static')) {
-//         const path = context.request.url.pathname.substring(7);
-//
-//         await send(context, path, {
-//             root: `${Deno.cwd()}/static`
-//         });
-//
-//     } else {
-//         await next();
-//     }
-// }
+const serveStaticFilesMiddleware = async(context, next) => {
+    if (context.request.url.pathname.startsWith('/static')) {
+        const path = context.request.url.pathname.substring(7);
+
+        await send(context, path, {
+            root: `${Deno.cwd()}/static`
+        });
+
+    } else {
+        await next();
+    }
+}
 
 const accessMiddleware = async ({request, response, session}, next) => {
     if (request.url.pathname.startsWith('/behavior')) {
@@ -49,4 +49,4 @@ const accessMiddleware = async ({request, response, session}, next) => {
     }
 }
 
-export {errorMiddleware, requestTimingMiddleware, accessMiddleware /*, serveStaticFilesMiddleware*/};
+export {errorMiddleware, requestTimingMiddleware, accessMiddleware, serveStaticFilesMiddleware};

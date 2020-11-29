@@ -20,6 +20,7 @@ const initApp = async (baseDir) => {
 
     app.use(middleware.errorMiddleware);
     app.use(middleware.requestTimingMiddleware);
+    app.use(middleware.serveStaticFilesMiddleware);
 
     app.use(router.routes());
 // app.use(router.allowedMethods());
