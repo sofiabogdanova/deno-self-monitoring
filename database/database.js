@@ -1,20 +1,19 @@
-import { Client } from "../deps.js";
-import { config } from "../config/config.js";
+import {Pool} from "../deps.js";
+import {config} from "../config/config.js";
 
-const getClient = () => {
-    return new Client(config.database);
-}
+const POOL_CONNECTIONS = 20;
+const dbPool = new Pool(config.database, POOL_CONNECTIONS, true);
 
-const executeQuery = async(query, ...args) => {
-    const client = getClient();
+const executeQuery = async (query, ...args) => {
+    let client;
     try {
-        await client.connect();
+        client = await dbPool.connect();
         return await client.query(query, ...args);
     } catch (e) {
         console.log(e);
     } finally {
-        await client.end();
+        await client.release();
     }
 }
 
-export { executeQuery };
+export {executeQuery};
