@@ -6,7 +6,7 @@
             <form method="POST" action="/behavior/reporting/evening">
                 <%- include('./partials/errors.ejs', { errors: errors }) %>
                 <div>
-                    <label for="exerciseTime">Exercise time (in hours)</label>
+                    <label for="exerciseTime">Sport and exercise time (in hours)</label>
                     <input type="number" name="exerciseTime" step=".1" min="0" id="exerciseTime" value="<%= eveningReport.exerciseTime %>"/>
                 </div>
                 <br/>
