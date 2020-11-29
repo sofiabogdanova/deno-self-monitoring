@@ -15,7 +15,7 @@ async function getApp() {
     return app;
 }
 
-Deno.test('GET to / should return HTTP OK', async () => {
+Deno.test('GET to / should be accessible', async () => {
     const app = await getApp()
 
     const request = await superoak(app);
@@ -25,64 +25,64 @@ Deno.test('GET to / should return HTTP OK', async () => {
 });
 
 // statisticsController
-Deno.test('GET to /behavior/summary should return HTTP Unauthorized', async () => {
+Deno.test('GET to /behavior/summary should be accessible', async () => {
     const app = await getApp()
 
     const request = await superoak(app);
     await request
         .get('/behavior/summary')
-        .expect(401);
+        .expect(200);
 });
 
 // router.post('/behavior/summary', statisticsController.allStatistics);
-Deno.test('POST to /behavior/summary should return HTTP Unauthorized', async () => {
+Deno.test('POST to /behavior/summary should be accessible', async () => {
     const app = await getApp()
 
     const request = await superoak(app);
     await request
         .post('/behavior/summary')
-        .expect(401);
+        .expect(200);
 });
 
 // reportingController
-Deno.test('GET to /behavior/reporting should return HTTP Unauthorized', async () => {
+Deno.test('GET to /behavior/reporting should be accessible', async () => {
     const app = await getApp()
 
     const request = await superoak(app);
     await request
         .get('/behavior/reporting')
-        .expect(401);
+        .expect(200);
 });
 
-Deno.test('GET to /behavior/summary/:form should return HTTP Unauthorized', async () => {
+Deno.test('GET to /behavior/summary/:form should be accessible', async () => {
     const app = await getApp()
 
     const request = await superoak(app);
     await request
         .get('/behavior/summary/1')
-        .expect(401);
+        .expect(200);
 });
 
-Deno.test('POST to /behavior/reporting/morning should return HTTP Unauthorized', async () => {
+Deno.test('POST to /behavior/reporting/morning should be accessible', async () => {
     const app = await getApp()
 
     const request = await superoak(app);
     await request
         .post('/behavior/reporting/morning', {})
-        .expect(401);
+        .expect(200);
 });
 
-Deno.test('POST to /behavior/reporting/evening should return HTTP Unauthorized', async () => {
+Deno.test('POST to /behavior/reporting/evening should be accessible', async () => {
     const app = await getApp()
 
     const request = await superoak(app);
     await request
         .post('/behavior/reporting/evening', {})
-        .expect(401);
+        .expect(200);
 });
 
 // authController
-Deno.test('GET to /behavior/summary should return HTTP OK', async () => {
+Deno.test('GET to /behavior/summary should be accessible', async () => {
     const app = await getApp()
 
     const request = await superoak(app);
@@ -91,7 +91,7 @@ Deno.test('GET to /behavior/summary should return HTTP OK', async () => {
         .expect(200);
 });
 
-Deno.test('POST to /auth/login should return HTTP OK', async () => {
+Deno.test('POST to /auth/login should be accessible', async () => {
     const app = await getApp()
 
     const request = await superoak(app);
@@ -100,7 +100,7 @@ Deno.test('POST to /auth/login should return HTTP OK', async () => {
         .expect(200);
 });
 
-Deno.test('GET to /auth/register should return HTTP OK', async () => {
+Deno.test('GET to /auth/register should be accessible', async () => {
     const app = await getApp()
 
     const request = await superoak(app);
@@ -109,7 +109,7 @@ Deno.test('GET to /auth/register should return HTTP OK', async () => {
         .expect(200);
 });
 
-Deno.test('POST to /behavior/summary should return HTTP Unauthorized', async () => {
+Deno.test('POST to /behavior/summary should be accessible', async () => {
     const app = await getApp()
 
     const request = await superoak(app);
@@ -118,7 +118,7 @@ Deno.test('POST to /behavior/summary should return HTTP Unauthorized', async () 
         .expect(200);
 });
 
-Deno.test('GET to /auth/logout should return HTTP OK', async () => {
+Deno.test('GET to /auth/logout should be accessible', async () => {
     const app = await getApp()
 
     const request = await superoak(app);
