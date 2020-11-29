@@ -29,8 +29,8 @@ router.post('/behavior/reporting/evening', reportingController.postEveningReport
 router.get('/auth/login', authController.showLoginForm)
 router.post('/auth/login', authController.authenticate)
 
-router.get('/auth/register', authController.showRegisterForm)
-router.post('/auth/register', authController.register)
+router.get('/auth/registration', authController.showRegisterForm)
+router.post('/auth/registration', authController.register)
 
 router.get('/auth/logout', authController.logout)
 

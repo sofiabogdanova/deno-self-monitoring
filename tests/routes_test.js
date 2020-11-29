@@ -134,12 +134,12 @@ Deno.test({
 });
 
 Deno.test({
-    name: 'GET to /auth/register should be accessible', async fn() {
+    name: 'GET to /auth/registration should be accessible', async fn() {
         const app = await getApp()
 
         const request = await superoak(app);
         await request
-            .get('/auth/register')
+            .get('/auth/registration')
             .expect(200);
     },
     sanitizeResources: false,
@@ -152,7 +152,7 @@ Deno.test({
 
         const request = await superoak(app);
         await request
-            .post('/auth/register', {})
+            .post('/auth/registration', {})
             .expect(200);
     }, sanitizeResources: false,
     sanitizeOps: false
