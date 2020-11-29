@@ -83,12 +83,12 @@ Deno.test('PreviousMonth should return correct value', () => {
 Deno.test('MonthByMonthNumber should return correct value', () => {
     // arrange
     const expected = {
-        start: new Date(2020, 2, 1),
-        end: new Date(2020, 3, 0)
+        start: '2020-02-01',
+        end: '2020-02-29'
     };
 
     // act
-    const actual = new DateHelper().monthByMonthNumber(3, 2020);
+    const actual = new DateHelper().monthByMonthNumber(2, 2020);
 
     // assert
     assertEquals(actual, expected);
