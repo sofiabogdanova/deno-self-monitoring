@@ -34,10 +34,10 @@ export default class DateHelper {
 
     weekByWeekNumber(weekNumber) {
         const currentDate = this.currentDate();
-        let numOfDaysPastSinceLastMonday = eval(currentDate.getDay() - 1);
+        const numOfDaysPastSinceLastMonday = eval(currentDate.getDay() - 1);
         currentDate.setDate(currentDate.getDate() - numOfDaysPastSinceLastMonday);
-        let weekNoToday = this.week();
-        let weeksInTheFuture = eval(weekNumber - weekNoToday);
+        const weekNoToday = this.week();
+        const weeksInTheFuture = eval(weekNumber - weekNoToday);
         currentDate.setDate(currentDate.getDate() + eval(7 * weeksInTheFuture));
         const start = format(currentDate);
         currentDate.setDate(currentDate.getDate() + 6);

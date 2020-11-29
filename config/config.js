@@ -1,3 +1,3 @@
-let config = {};
+const config = {};
 
 export { config }; 

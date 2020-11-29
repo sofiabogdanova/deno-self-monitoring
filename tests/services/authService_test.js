@@ -30,7 +30,7 @@ Deno.test('Get user should get user', async () => {
     await createUser(email, password)
 
     // act
-    let user = await getUser(email)
+    const user = await getUser(email)
 
     // assert
     assert(user != null, 'No user was found in database!')
@@ -45,7 +45,7 @@ Deno.test('Get user should return null when user doesn\'t exist in database', as
     const email = 'notexistinguser@test.com';
 
     // act
-    let user = await getUser(email)
+    const user = await getUser(email)
 
     // assert
     assert(user === null, 'User has been found when shouldn\'t!')
