@@ -54,15 +54,22 @@ export default class DateHelper {
         const start = format(currentDate);
 
         return {
-            start: start,
-            end: end
+            start,
+            end
         }
     }
 
     monthByMonthNumber(month, year) {
-        const start = new Date(year, month - 1, 1);
-        const end = new Date(year, month, 0);
-        return {start, end};
+        let start = new Date(year, month - 1, 1);
+        start = format(start);
+
+        let end = new Date(year, month, 0);
+        end = format(end);
+
+        return {
+            start,
+            end
+        };
     }
 }
 
