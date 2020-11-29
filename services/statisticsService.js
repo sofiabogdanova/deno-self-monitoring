@@ -41,8 +41,7 @@ const dailyStatistics = async (day, month, year) => {
         start: date,
         end: date
     }
-    const statistics = await getAllStatistic(period);
-    return statistics;
+    return await getAllStatistic(period);
 }
 
 const lastWeekStatistics = async () => {
@@ -65,43 +64,44 @@ const lastWeekStatistics = async () => {
 }
 
 const getAllStatistic = async (period, userId) => {
-    return {
-        averageSleepTime: await averageSleepTime(period, userId),
-        averageExerciseTime: await averageExerciseTime(period, userId),
-        averageStudyTime: await averageStudyTime(period, userId),
-        averageSleepQuality: await averageSleepQuality(period, userId),
-        averageMood: await averageMood(period, userId),
+    let res;
+
+    if (userId) {
+        res = await executeQuery(`SELECT * FROM get_averages_for_user($1, $2, $3)`,
+            userId,
+            period.start,
+            period.end
+        );
+    } else {
+        res = await executeQuery(`SELECT * FROM get_averages_for_date_rage($1, $2)`,
+            period.start,
+            period.end
+        );
     }
-}
 
-const averageSleepTime = async (period, userId) => {
-    const duration = await sleepDuration(period, userId);
-    const sleepValues = noData(duration) ? [] : duration.rowsOfObjects().map(obj => Number(obj.sleep_duration));
-    return average(sleepValues, []);
-}
+    let averageSleepTime = 0;
+    let averageExerciseTime = 0;
+    let averageStudyTime = 0;
+    let averageSleepQuality = 0;
+    let averageMood = 0;
 
-const averageExerciseTime = async (period, userId) => {
-    const duration = await exerciseTime(period, userId);
-    const exerciseValues = noData(duration) ? [] : duration.rowsOfObjects().map(obj => Number(obj.exercise_time));
-    return average(exerciseValues, []);
-}
+    if (res && res.rowCount > 0) {
+        const t = res.rowsOfObjects()[0];
 
-const averageStudyTime = async (period, userId) => {
-    const duration = await studyTime(period, userId);
-    const studyingValues = noData(duration) ? [] : duration.rowsOfObjects().map(obj => Number(obj.studying_time));
-    return average(studyingValues, []);
-}
+        averageSleepTime = t.avg_sleep_duration;
+        averageExerciseTime = t.avg_excercise_time;
+        averageStudyTime = t.avg_studying_time;
+        averageSleepQuality = t.avg_sleep_quality;
+        averageMood = t.avg_mood;
+    }
 
-const averageSleepQuality = async (period, userId) => {
-    const duration = await sleepQuality(period, userId);
-    const sleepQualityValues = noData(duration) ? [] : duration.rowsOfObjects().map(obj => Number(obj.sleep_quality));
-    return average(sleepQualityValues, []);
-}
-
-const averageMood = async (period, userId) => {
-    const mood = await moodQuality(period, userId);
-    const moodValues = noData(mood) ? [] : mood.rowsOfObjects().map(obj => Number(obj.mood));
-    return average(moodValues, []);
+    return {
+        averageSleepTime: averageSleepTime,
+        averageExerciseTime: averageExerciseTime,
+        averageStudyTime: averageStudyTime,
+        averageSleepQuality: averageSleepQuality,
+        averageMood: averageMood
+    }
 }
 
 const noData = (rows) => {
@@ -112,86 +112,6 @@ const average = (arr1, arr2) => {
     const sum = arr1.reduce((a, b) => a + b, 0) + arr2.reduce((a, b) => a + b, 0);
     const count = arr1.length + arr2.length;
     return count === 0 ? 0 : sum / count;
-}
-
-const sleepDuration = async (period, userId) => {
-    if (userId) {
-        return await executeQuery("SELECT sleep_duration FROM morning_info WHERE day between $1 and $2 " +
-            "and user_id=$3",
-            period.start,
-            period.end,
-            userId
-        );
-    }
-
-    return await executeQuery("SELECT sleep_duration FROM morning_info WHERE day between $1 and $2",
-        period.start,
-        period.end
-    );
-}
-
-const exerciseTime = async (period, userId) => {
-    if (userId) {
-        return await executeQuery("SELECT exercise_time FROM evening_info WHERE day between $1 and $2 " +
-            "and user_id=$3",
-            period.start,
-            period.end,
-            userId
-        );
-    }
-
-    return await executeQuery("SELECT exercise_time FROM evening_info WHERE day between $1 and $2",
-        period.start,
-        period.end
-    );
-}
-
-const studyTime = async (period, userId) => {
-    if (userId) {
-        return await executeQuery("SELECT studying_time FROM evening_info WHERE day between $1 and $2 " +
-            "and user_id=$3",
-            period.start,
-            period.end,
-            userId
-        );
-    }
-
-    return await executeQuery("SELECT studying_time FROM evening_info WHERE day between $1 and $2",
-        period.start,
-        period.end
-    );
-}
-
-const sleepQuality = async (period, userId) => {
-    if (userId) {
-        return await executeQuery("SELECT sleep_quality FROM morning_info WHERE day between $1 and $2 " +
-            "and user_id=$3",
-            period.start,
-            period.end,
-            userId
-        );
-    }
-
-    return await executeQuery("SELECT sleep_quality FROM morning_info WHERE day between $1 and $2",
-        period.start,
-        period.end
-    );
-}
-
-const moodQuality = async (period, userId) => {
-    if (userId) {
-        return await executeQuery("SELECT mood FROM evening_info WHERE day between $1 and $2 " +
-            "and user_id=$3",
-            period.start,
-            period.end,
-            userId
-        );
-    }
-
-    return await executeQuery("SELECT mood FROM evening_info WHERE day between $1 and $2",
-        period.start,
-        period.end
-    );
 }
 
 export {
