@@ -24,7 +24,11 @@ const allStatisticsDefault = async ({session, render}) => {
     const weekPeriod = dateHelper.previousWeek();
 
     const data = await statistics(weekPeriod, monthPeriod, userData.userId);
+
     data.email = userData.email;
+    data.weekDataNotExists = dataNotExists(data.weeklyStatistics, 'weekly summary', weekPeriod);
+    data.monthDataNotExists = dataNotExists(data.monthlyStatistics, 'monthly summary', monthPeriod);
+
     render('summary.ejs', data);
 }
 
@@ -38,7 +42,10 @@ const allStatistics = async ({session, render, request}) => {
     const monthPeriod = getMonthPeriod(params);
 
     const data = await statistics(weekPeriod, monthPeriod, userData.userId);
+
     data.email = userData.email;
+    data.weekDataNotExists = dataNotExists(data.weeklyStatistics, 'weekly summary', weekPeriod);
+    data.monthDataNotExists = dataNotExists(data.monthlyStatistics, 'monthly summary', monthPeriod);
 
     render('summary.ejs', data);
 }
@@ -93,4 +100,12 @@ const getMonthPeriod = (params) => {
     return dateHelper.monthByMonthNumber(month, year);
 }
 
+const dataNotExists = (statistics, statisticsType, period) => {
+    //since mood values are between 1 and 5 => average mood can only be 0 if no data exists
+    if (statistics.averageMood === 0) {
+        return `No ${statisticsType} exists for period  from ${period.start} to ${period.end}`;
+    }
+
+    return null;
+}
 export {allStatisticsDefault, allStatistics}

@@ -1,7 +1,17 @@
 <%- include('./partials/header.ejs') %>
 <div class="container">
     <h3>Summary</h3>
-    <h5>Note! By default, values are calculated for previous month and previous week.</h5>
+    <h6>Note! By default, values are calculated for previous month and previous week.</h6>
+    <% if (monthDataNotExists) { %>
+        <p>
+            <%= monthDataNotExists %>
+        </p>
+    <% } %>
+    <% if (weekDataNotExists) { %>
+        <p>
+            <%= weekDataNotExists %>
+        </p>
+    <% } %>
     <br/>
     <div class="row">
         <div class="col-md-6">
@@ -9,7 +19,8 @@
                 <div class="card-body">
                     <h5 class="card-title">Week summary</h5>
                     <p class="card-text">Average sleep duration: <%= weeklyStatistics.averageSleepTime %> hours</p>
-                    <p class="card-text">Average exercise duration: <%= weeklyStatistics.averageExerciseTime %> hours</p>
+                    <p class="card-text">Average exercise duration: <%= weeklyStatistics.averageExerciseTime %>
+                        hours</p>
                     <p class="card-text">Average study duration: <%= weeklyStatistics.averageStudyTime %> hours</p>
                     <p class="card-text">Average sleep quality: <%= weeklyStatistics.averageSleepQuality %></p>
                     <p class="card-text">Average mood: <%= weeklyStatistics.averageMood %></p>
@@ -28,7 +39,8 @@
                 <div class="card-body">
                     <h5 class="card-title">Month summary</h5>
                     <p class="card-text">Average sleep duration: <%= monthlyStatistics.averageSleepTime %> hours</p>
-                    <p class="card-text">Average exercise and sport duration: <%= monthlyStatistics.averageExerciseTime %> hours</p>
+                    <p class="card-text">Average exercise and sport
+                        duration: <%= monthlyStatistics.averageExerciseTime %> hours</p>
                     <p class="card-text">Average study duration: <%= monthlyStatistics.averageStudyTime %> hours</p>
                     <p class="card-text">Average sleep quality: <%= monthlyStatistics.averageSleepQuality %></p>
                     <p class="card-text">Average mood: <%= monthlyStatistics.averageMood %></p>
