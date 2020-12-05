@@ -27,3 +27,5 @@ jobs:
 
       - name: Run tests
         run: deno test tests/ --allow-all --unstable
+        env:
+          DENO_ENV: TEST
