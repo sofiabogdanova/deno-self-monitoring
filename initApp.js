@@ -26,7 +26,8 @@ const initApp = async (baseDir) => {
 // app.use(router.allowedMethods());
 
     if (Deno.env.get('DENO_ENV') !== 'TEST') {
-        await app.listen({port: 7777});
+        const port = Deno.env.get('PORT') || 7777;
+        await app.listen({port: port});
     }
 
     return app;
