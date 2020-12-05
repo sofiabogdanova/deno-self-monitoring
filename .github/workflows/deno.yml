@@ -29,3 +29,8 @@ jobs:
         run: deno test tests/ --allow-all --unstable
         env:
           DENO_ENV: TEST
+          PGHOST: ${{ secrets.PGHOST }}
+          PGDATABASE: ${{ secrets.PGDATABASE }}
+          PGUSER: ${{ secrets.PGUSER }}
+          PGPASSWORD: ${{ secrets.PGPASSWORD }}
+          PGPORT: ${{ secrets.PGPORT }}
