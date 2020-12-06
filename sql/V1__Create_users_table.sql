@@ -1,4 +1,6 @@
-CREATE TABLE IF NOT EXISTS users
+DROP TABLE IF EXISTS morning_info;
+
+CREATE TABLE users
 (
     id       SERIAL       NOT NULL
         CONSTRAINT users_pkey
@@ -8,4 +10,4 @@ CREATE TABLE IF NOT EXISTS users
 );
 
 CREATE UNIQUE INDEX users_lower_idx
-    ON users (lower(email::TEXT));
+    ON users (LOWER(email::TEXT));
