@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS morning_info;
+DROP TABLE IF EXISTS users;
 
 CREATE TABLE users
 (
