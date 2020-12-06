@@ -1,8 +1,7 @@
 ## Deno Self Monitoring App
 
-Table of Contents
------------------
-
+### Table of Contents
+* [Description](#description)
 * [Demo](#demo)
 * [Database initialization](#database-initialization)
 * [Run the app](#run-the-app)
@@ -10,7 +9,26 @@ Table of Contents
 * [Test](#tests)
 
 ### Description
-Brief description of the app
+This is a web application for self-monitoring purposes.
+The application provides users an opportunity to report behavior daily.
+
+#### Reported content
+The behavior reported to the application are as follows:
+
+- Sleep duration and sleep quality
+- Time spent on sports and exercise
+- Time spent studying
+- Regularity and quality of eating
+- Generic mood
+
+#### Summarization
+The application provides functionality for summarization of responses. Each user can view statistics of their reports on a weekly and monthly level. These statistics are as follows.
+
+- Average sleep duration
+- Average time spent on sports and exercise
+- Average time spent studying
+- Average sleep quality
+- Average generic mood
 
 ### Demo
 The application is deployed to Heroku and can be accessed by the following link:  
@@ -26,6 +44,17 @@ deno run --allow-all --unstable app.js
 After initialization process is over the app will be listening on `7777` port.  
 So you could access it on [localhost:7777](http://localhost:7777)
 
+**!!! IMPORTANT !!!**  
+In order to work this app requires you to set up the following ENV variables:
+- DENO_ENV - set it to anything else from `TEST`
+- PGHOST - address where your PostgreSql server is accessible
+- PGDATABASE - name of the database on your PostgreSql server 
+- PGUSER - username to access your PostgreSql server
+- PGPASSWORD - password to access your PostgreSql server
+- PGPORT - port on which your PostgreSql server is listening 
+
+You could set them all up in `.env` file.
+
 #### Or using docker compose
 
 As an alternative you could use docker-compose to wire up the application with PostgreSql database in the container.
@@ -33,6 +62,22 @@ Just simply run the following command in terminal from the app's root:
 ```shell
 docker-compose up
 ```
+
+**!!! IMPORTANT !!!**  
+In order to work you need to set up the following ENV variables:
+- DENO_ENV - set it to anything else from `TEST`
+- PGHOST - address where your PostgreSql server is accessible
+- PGDATABASE - name of the database on your PostgreSql server
+- PGUSER - username to access your PostgreSql server
+- PGPASSWORD - password to access your PostgreSql server
+- PGPORT - port on which your PostgreSql server is listening
+- POSTGRES_USER - username to access your PostgreSql server
+- POSTGRES_PASSWORD - password to access your PostgreSql server
+- FLYWAY_USER - username to access your PostgreSql server
+- FLYWAY_PASSWORD - password to access your PostgreSql server
+- FLYWAY_URL - connection string to PostgreSql server (for ex. `jdbc:postgresql://postgres-database:5432/postgres`)
+
+You could set them all up in `.env` file.
 
 ### Database initialization
 All below listed scripts you could find in `/sql` folder
