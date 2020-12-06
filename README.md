@@ -1,10 +1,44 @@
 ## Deno Self Monitoring App
 
+Table of Contents
+-----------------
+
+* [Demo](#demo)
+* [Database initialization](#database-initialization)
+* [Run the app](#run-the-app)
+  * [OR using Docker Compose:](#or-using-docker-compose)
+* [Test](#tests)
+
+### Description
+Brief description of the app
+
+### Demo
+The application is deployed to Heroku and can be accessed by the following link:  
+[!!!SOBO INSERT LINK HERE!!!](https://heroku.com)
+
+### Run the app
+If you want to run the app simply run in terminal:
+
+```shell
+deno run --allow-all --unstable app.js
+```
+
+After initialization process is over the app will be listening on `7777` port.  
+So you could access it on [localhost:7777](http://localhost:7777)
+
+#### Or using docker compose
+
+As an alternative you could use docker-compose to wire up the application with PostgreSql database in the container.
+Just simply run the following command in terminal from the app's root:
+```shell
+docker-compose up
+```
+
 ### Database initialization
 All below listed scripts you could find in `/sql` folder
 
-This app requires PostgreSql database
-In order to work this app requires you to run following sql scripts
+This app requires PostgreSql database  
+In order to work this app requires you to run following sql scripts:
 
 #### Create `users` table
 ```postgresql
@@ -266,8 +300,9 @@ $func$ LANGUAGE plpgsql;
 
 ```
 
-Documentation contains necessary CREATE TABLE statements needed to create the database used by the application
-### Documentation contains the address at which the application can currently be accessed
-### Documentation contains guidelines for running the application
-### Documentation contains guidelines for running tests
+### Tests
+If you want to run tests simply run in terminal:
 
+```shell
+deno test --allow-all --unstable
+```
