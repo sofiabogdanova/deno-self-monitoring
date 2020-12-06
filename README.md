@@ -32,7 +32,7 @@ The application provides functionality for summarization of responses. Each user
 
 ### Demo
 The application is deployed to Heroku and can be accessed by the following link:  
-[!!!SOBO INSERT LINK HERE!!!](https://heroku.com)
+https://deno-self-monitoring.herokuapp.com/
 
 ### Run the app
 If you want to run the app simply run in terminal:
