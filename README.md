@@ -351,3 +351,14 @@ If you want to run tests simply run in terminal:
 ```shell
 deno test --allow-all --unstable
 ```
+
+**!!! IMPORTANT !!!**  
+In order to work you need to set up the following ENV variables:
+- DENO_ENV=TEST - **Please pay attention that this variable should be TEST. Otherwise, the app will hang**
+- PGHOST - address where your PostgreSql server is accessible
+- PGDATABASE - name of the database on your PostgreSql server
+- PGUSER - username to access your PostgreSql server
+- PGPASSWORD - password to access your PostgreSql server
+- PGPORT - port on which your PostgreSql server is listening
+
+You could set them all up in `.env.test` file.
