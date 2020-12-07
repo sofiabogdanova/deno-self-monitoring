@@ -34,6 +34,12 @@ The application provides functionality for summarization of responses. Each user
 The application is deployed to Heroku and can be accessed by the following link:  
 [https://deno-self-monitoring.herokuapp.com/](https://deno-self-monitoring.herokuapp.com/)
 
+**!!! IMPORTANT !!!**
+
+Application is deployed to a server located in USA. In USA, week starts on Sunday and ends on Saturday (as opposed to Europe, where week starts on Monday and ends on Sunday).
+
+Hence, if testing the `behavour/summary` page occurs on Sunday, be careful as week number can be confusing.   
+
 ### Run the app
 If you want to run the app simply run in terminal:
 
